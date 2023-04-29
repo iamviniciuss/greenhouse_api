@@ -37,7 +37,7 @@ func (suite *ManageTemperatureTestSuite) Test_Should_Return_Command_To_Turn_Off_
 		IdealValue:   []int{20, 26},
 	}
 
-	humidity := &TemperatureRepositoryDTO{
+	humidity := &HumidityRepositoryDTO{
 		ID:          "123",
 		SensorID:    "1",
 		CreatedAt:   time.Now().UTC(),
@@ -72,7 +72,7 @@ func (suite *ManageTemperatureTestSuite) Test_Should_Return_Command_To_Turn_On_W
 		IdealValue:   []int{20, 26},
 	}
 
-	humidity := &TemperatureRepositoryDTO{
+	humidity := &HumidityRepositoryDTO{
 		ID:          "123",
 		SensorID:    "1",
 		CreatedAt:   time.Now().UTC(),
@@ -107,7 +107,7 @@ func (suite *ManageTemperatureTestSuite) Test_Should_Return_Command_To_Turn_On_W
 		IdealValue:   []int{20, 26},
 	}
 
-	humidity := &TemperatureRepositoryDTO{
+	humidity := &HumidityRepositoryDTO{
 		ID:          "123",
 		SensorID:    "1",
 		CreatedAt:   time.Now().UTC(),
