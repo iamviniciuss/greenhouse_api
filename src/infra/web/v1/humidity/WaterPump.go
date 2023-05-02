@@ -22,14 +22,12 @@ func NewWaterPumpCtrl(humidityRepository domain.TemperatureRepository) *WaterPum
 }
 
 func (wpc *WaterPumpCtrl) Execute(params map[string]string, body []byte, queryArgs http.QueryParams) (interface{}, *infra.IntegrationError) {
-	// companyId := string(queryArgs.GetParam("companyId"))
-
 	res, err := application.NewManageWaterPump(wpc.humidityRepository).Execute(&domain.Greenhouse{
 		ID:   "01",
 		Name: "ESP32_HOUSE_VINICIUS",
 		Sensors: []*domain.Sensor{
 			&domain.Sensor{
-				ID:            "644d54e4216a614520094a4c",
+				ID:            "644d54f4216a614520094a4d",
 				Envoironments: &domain.Envoironment{},
 				Actuator: &domain.Actuator{
 					ID:   "1",

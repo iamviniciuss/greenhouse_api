@@ -32,7 +32,7 @@ func (m *ManageWaterPump) Execute(greenhouse *domain.Greenhouse) (*ManageWaterPu
 
 	fmt.Println("sensorID:", sensorID)
 
-	humidity, err := m.TemperatureRepository.FindLastValue("644d54f4216a614520094a4d")
+	humidity, err := m.TemperatureRepository.FindLastValue(sensorID)
 	if err != nil {
 		fmt.Println("not found humidity:")
 		return nil, err
