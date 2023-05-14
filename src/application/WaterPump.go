@@ -1,9 +1,12 @@
 package application
 
 import (
+	"encoding/json"
 	"fmt"
+	"os"
 
 	domain "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/domain"
+	MQTT "github.com/eclipse/paho.mqtt.golang"
 )
 
 type ManageWaterPump struct {
@@ -56,4 +59,57 @@ func (m *ManageWaterPump) Execute(greenhouse *domain.Greenhouse) (*ManageWaterPu
 		WaterPumpRelay:  "0",
 	}, nil
 
+}
+
+func (m *ManageWaterPump) GetCommand(mqttClient MQTT.Client) (*WaterPumpCtrlOutput, error) {
+	fmt.Println("Executing GetCommand....")
+
+	greenhouse := &domain.Greenhouse{
+		ID:   "01",
+		Name: "ESP32_HOUSE_VINICIUS",
+		Sensors: []*domain.Sensor{
+			&domain.Sensor{
+				ID:            "645d82f4d2d163d2edc380a5",
+				Envoironments: &domain.Envoironment{},
+				Actuator: &domain.Actuator{
+					ID:   "1",
+					Name: "Bomba d'água",
+				},
+				IdealValue: []int{800, 1638},
+				Name:       "FC-28 - Sensor de umidade do solo",
+			},
+		},
+	}
+
+	res, err := m.Execute(greenhouse)
+
+	if err != nil {
+		return nil, err
+	}
+
+	payload, err := json.Marshal(WaterPumpCtrlOutput{
+		TurnOnWaterPump: res.TurnOnWaterPump,
+	})
+
+	if err != nil {
+		fmt.Println(err.Error())
+		return nil, err
+
+	}
+
+	token := mqttClient.Publish(os.Getenv("WATER_PUMP_PUBLISHER")+greenhouse.Sensors[0].ID, 0, false, payload)
+
+	if token.Wait() && token.Error() != nil {
+		fmt.Println(token.Error().Error())
+		return nil, token.Error()
+	}
+
+	return &WaterPumpCtrlOutput{
+		TurnOnWaterPump: res.TurnOnWaterPump,
+	}, nil
+
+}
+
+type WaterPumpCtrlOutput struct {
+	TurnOnWaterPump bool `json:"turnOn"`
 }
