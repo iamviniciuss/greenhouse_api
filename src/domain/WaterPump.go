@@ -14,10 +14,14 @@ func NewWaterPumpState() *WaterPump {
 }
 
 func (wp *WaterPump) ManageState(sensor *Sensor, humidity *HumidityRepositoryDTO) (*WaterPumpState, error) {
-	itHumidityOk := isInRange(int(humidity.Value)+(int(sensor.IdealValue[0])/int(sensor.IdealValue[1])), int(sensor.IdealValue[0]), int(sensor.IdealValue[1]))
+	itHumidityOk := isInRange(
+		int(humidity.Value)+(int(sensor.IdealValue[0])/int(sensor.IdealValue[1])),
+		int(sensor.IdealValue[0]),
+		int(sensor.IdealValue[1]),
+	)
 
 	if itHumidityOk {
-		fmt.Println("Desligar a bomba! Umidade está em nivel intermediário")
+		fmt.Println("Drop a bomb! Humidity is at the intermediate level.")
 		return &WaterPumpState{
 			TurnOnWaterPump: false,
 		}, nil
@@ -25,13 +29,13 @@ func (wp *WaterPump) ManageState(sensor *Sensor, humidity *HumidityRepositoryDTO
 
 	itIsHighHumidity := humidityIsHigh(int(humidity.Value), int(sensor.IdealValue[1]))
 	if itIsHighHumidity {
-		fmt.Println("Umidade Elevada! Desligar bomba d'agua!")
+		fmt.Println("High Humidity! Turn off water pump!")
 		return &WaterPumpState{
 			TurnOnWaterPump: false,
 		}, nil
 	}
 
-	fmt.Println("Umidade BAIXA!! ligar a Bomba")
+	fmt.Println("LOW humidity!! turn on the pump")
 
 	return &WaterPumpState{
 		TurnOnWaterPump: true,

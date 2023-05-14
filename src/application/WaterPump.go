@@ -40,7 +40,7 @@ func (m *ManageWaterPump) Execute(greenhouse *domain.Greenhouse) (*ManageWaterPu
 
 	sensor, err := m.TemperatureRepository.FindSensorById(humidity.SensorID)
 	if err != nil {
-		fmt.Println("not found sensor:")
+		fmt.Println("not found sensor:", humidity.SensorID)
 		return nil, err
 	}
 

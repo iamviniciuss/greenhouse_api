@@ -65,7 +65,7 @@ func (erm *TemperatureRepositoryMongo[T]) Create(humidity *domain.HumidityReposi
 	data := bson.M{
 		"_id":        id,
 		"created_at": time.Now(),
-		"sensor_id":  humidity.SensorID,
+		"sensor_id":  mongo.GetObjectIDFromString(humidity.SensorID),
 		"value":      humidity.Value,
 	}
 

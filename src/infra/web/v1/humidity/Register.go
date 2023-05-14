@@ -2,6 +2,7 @@ package infra
 
 import (
 	"encoding/json"
+	"fmt"
 
 	domain "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/domain"
 	infra "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/errors"
@@ -36,6 +37,7 @@ func (wpc *RegisterHumidityCtrl) Execute(params map[string]string, body []byte, 
 		return nil, &infra.IntegrationError{StatusCode: 400, Message: err.Error()}
 	}
 
+	fmt.Println("Humidity: ", inputJSON.Humidity)
 	created, err := wpc.humidityRepository.Create(&domain.HumidityRepositoryDTO{
 		SensorID: inputJSON.SensorID,
 		Value:    inputJSON.Humidity,

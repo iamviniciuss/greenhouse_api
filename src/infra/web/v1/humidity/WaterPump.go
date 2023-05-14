@@ -27,13 +27,13 @@ func (wpc *WaterPumpCtrl) Execute(params map[string]string, body []byte, queryAr
 		Name: "ESP32_HOUSE_VINICIUS",
 		Sensors: []*domain.Sensor{
 			&domain.Sensor{
-				ID:            "644d54f4216a614520094a4d",
+				ID:            "645d82f4d2d163d2edc380a5",
 				Envoironments: &domain.Envoironment{},
 				Actuator: &domain.Actuator{
 					ID:   "1",
 					Name: "Bomba d'água",
 				},
-				IdealValue: []int{20, 26},
+				IdealValue: []int{800, 1638},
 				Name:       "FC-28 - Sensor de umidade do solo",
 			},
 		},
