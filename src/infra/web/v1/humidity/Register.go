@@ -71,3 +71,14 @@ func (wpc *RegisterHumidityCtrl) Sensor(params map[string]string, body []byte, q
 
 	return created, nil
 }
+
+func (wpc *RegisterHumidityCtrl) List(params map[string]string, body []byte, queryArgs http.QueryParams) (interface{}, *infra.IntegrationError) {
+
+	all, err := wpc.humidityRepository.ListAll()
+
+	if err != nil {
+		return nil, &infra.IntegrationError{StatusCode: 400, Message: err.Error()}
+	}
+
+	return all, nil
+}
