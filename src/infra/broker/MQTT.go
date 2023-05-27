@@ -23,32 +23,67 @@ type RegisterHumidityCtrlnput struct {
 	SensorID string `json:"sensor_id,omitempty"`
 }
 
-type MQTTBroker struct {
-	humidityRepository domain.SoilRepository
-	topic              string
+type RegisterTemperatureCtrlnput struct {
+	Temperature float64 `json:"temperature,omitempty"`
+	SensorID    string  `json:"sensor_id,omitempty"`
 }
 
-func NewMQTTBroker(humidityRepository domain.SoilRepository, topic string) *MQTTBroker {
+type MQTTBroker struct {
+	humidityRepository    domain.SoilRepository
+	temperatureRepository domain.TemperatureRepository
+}
+
+func NewMQTTBroker(humidityRepository domain.SoilRepository, temperatureRepository domain.TemperatureRepository) *MQTTBroker {
 	return &MQTTBroker{
 		humidityRepository,
-		topic,
+		temperatureRepository,
 	}
 }
 
 func (mqb *MQTTBroker) onConnectHandler(client MQTT.Client) {
 	fmt.Println("Connected to broker")
-	// os.Getenv("WATER_PUMP_SUBSCRIBE")
-	if token := client.Subscribe(mqb.topic, 0, nil); token.Wait() && token.Error() != nil {
+	if token := client.Subscribe(os.Getenv("WATER_PUMP_SUBSCRIBE"), 0, nil); token.Wait() && token.Error() != nil {
 		panic(token.Error())
 	}
-	fmt.Println("Subscribed to topic:", mqb.topic)
+
+	if token := client.Subscribe(os.Getenv("TEMPERATURE_SUBSCRIBE"), 0, nil); token.Wait() && token.Error() != nil {
+		panic(token.Error())
+	}
+	fmt.Println("Subscribed to topic:", os.Getenv("WATER_PUMP_SUBSCRIBE"))
+	fmt.Println("Subscribed to topic:", os.Getenv("TEMPERATURE_SUBSCRIBE"))
 }
 
 func (mqb *MQTTBroker) onMessageHandler(client MQTT.Client, msg MQTT.Message) {
 	fmt.Printf("Received message on topic: %s\n", msg.Topic())
 	fmt.Printf("Message: %s\n", msg.Payload())
 
-	var inputJSON RegisterHumidityCtrlnput
+	if msg.Topic() == os.Getenv("WATER_PUMP_SUBSCRIBE") {
+
+		var inputJSON RegisterHumidityCtrlnput
+		err := json.Unmarshal(msg.Payload(), &inputJSON)
+
+		if err != nil {
+			fmt.Println(err.Error())
+			return
+		}
+
+		fmt.Println("Humidity: ", inputJSON.Humidity)
+		created, err := mqb.humidityRepository.Create(&domain.HumidityRepositoryDTO{
+			SensorID: inputJSON.SensorID,
+			Value:    inputJSON.Humidity,
+		})
+
+		if err != nil {
+			fmt.Println(err.Error())
+			return
+		}
+		fmt.Println("created:", created)
+
+		go application.NewManageWaterPump(mqb.humidityRepository).GetCommand(client)
+		return
+	}
+
+	var inputJSON RegisterTemperatureCtrlnput
 	err := json.Unmarshal(msg.Payload(), &inputJSON)
 
 	if err != nil {
@@ -56,30 +91,37 @@ func (mqb *MQTTBroker) onMessageHandler(client MQTT.Client, msg MQTT.Message) {
 		return
 	}
 
-	fmt.Println("Humidity: ", inputJSON.Humidity)
-	created, err := mqb.humidityRepository.Create(&domain.HumidityRepositoryDTO{
+	fmt.Println("Temperature: ", inputJSON.Temperature)
+	created, err := mqb.temperatureRepository.Create(&domain.TemperatureRepositoryDTO{
 		SensorID: inputJSON.SensorID,
-		Value:    inputJSON.Humidity,
+		Value:    inputJSON.Temperature,
 	})
 
 	if err != nil {
 		fmt.Println(err.Error())
 		return
 	}
-	fmt.Println("created:", created)
+	fmt.Println("Temperature created:", created)
 
-	go application.NewManageWaterPump(mqb.humidityRepository).GetCommand(client)
+	go application.NewManageTemperature(mqb.temperatureRepository).GetCommand(client)
 }
 
-func (mqb *MQTTBroker) MQTTClient() MQTT.Client {
+func (mqb *MQTTBroker) MQTTClient(clientId string) MQTT.Client {
+	basePath, _ := os.Getwd()
+	fmt.Println(basePath)
+
+	keysPath := basePath + "/keys/"
+	fmt.Println("\n\n", keysPath)
+
 	brokerURL := os.Getenv("BROKER_URL")
-	certFile := os.Getenv("CERT_FILE")
-	keyFile := os.Getenv("PRIVATE_FILE")
-	caFile := os.Getenv("CA_FILE")
+	certFile := keysPath + os.Getenv("CERT_FILE")
+	keyFile := keysPath + os.Getenv("PRIVATE_FILE")
+	caFile := keysPath + os.Getenv("CA_FILE")
 
 	opts := MQTT.NewClientOptions()
 	opts.AddBroker(brokerURL)
-	opts.SetClientID("greenhouse-api-go")
+	opts.SetClientID(clientId)
+	// opts.SetClientID("sdk-nodejs-v2")
 	opts.SetTLSConfig(mqb.NewTLSConfig(caFile, certFile, keyFile))
 	opts.SetAutoReconnect(true)
 	opts.SetOnConnectHandler(mqb.onConnectHandler)

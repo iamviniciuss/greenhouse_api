@@ -1,7 +1,5 @@
 package domain
 
-import "fmt"
-
 type WaterPump struct {
 }
 
@@ -21,7 +19,7 @@ func (wp *WaterPump) ManageState(sensor *Sensor, humidity *HumidityRepositoryDTO
 	)
 
 	if itHumidityOk {
-		fmt.Println("Drop a bomb! Humidity is at the intermediate level.")
+		// fmt.Println("Drop a bomb! Humidity is at the intermediate level.")
 		return &WaterPumpState{
 			TurnOnWaterPump: false,
 		}, nil
@@ -29,13 +27,13 @@ func (wp *WaterPump) ManageState(sensor *Sensor, humidity *HumidityRepositoryDTO
 
 	itIsHighHumidity := humidityIsHigh(int(humidity.Value), int(sensor.IdealValue[1]))
 	if itIsHighHumidity {
-		fmt.Println("High Humidity! Turn off water pump!")
+		// fmt.Println("High Humidity! Turn off water pump!")
 		return &WaterPumpState{
 			TurnOnWaterPump: false,
 		}, nil
 	}
 
-	fmt.Println("LOW humidity!! turn on the pump")
+	// fmt.Println("LOW humidity!! turn on the pump")
 
 	return &WaterPumpState{
 		TurnOnWaterPump: true,

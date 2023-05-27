@@ -24,8 +24,8 @@ func NewRegisterTemperatureCtrl(temperatureRepository domain.TemperatureReposito
 }
 
 type RegisterTemperatureCtrlnput struct {
-	Temperature int64  `json:"temperature,omitempty"`
-	SensorID    string `json:"sensor_id,omitempty"`
+	Temperature float64 `json:"temperature,omitempty"`
+	SensorID    string  `json:"sensor_id,omitempty"`
 }
 
 func (wpc *RegisterTemperatureCtrl) Execute(params map[string]string, body []byte, queryArgs http.QueryParams) (interface{}, *infra.IntegrationError) {

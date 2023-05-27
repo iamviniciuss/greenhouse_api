@@ -33,23 +33,23 @@ func (m *ManageWaterPump) Execute(greenhouse *domain.Greenhouse) (*ManageWaterPu
 
 	sensorID := greenhouse.Sensors[0].ID
 
-	fmt.Println("sensorID:", sensorID)
+	// fmt.Println("sensorID:", sensorID)
 
 	humidity, err := m.SoilRepository.FindLastValue(sensorID)
 	if err != nil {
-		fmt.Println("not found humidity:")
+		// fmt.Println("not found humidity:")
 		return nil, err
 	}
 
 	sensor, err := m.SoilRepository.FindSensorById(humidity.SensorID)
 	if err != nil {
-		fmt.Println("not found sensor:", humidity.SensorID)
+		// fmt.Println("not found sensor:", humidity.SensorID)
 		return nil, err
 	}
 
 	output, err := domain.NewWaterPumpState().ManageState(sensor, humidity)
 	if err != nil {
-		fmt.Println("not found NewWaterPumpState:")
+		// fmt.Println("not found NewWaterPumpState:")
 		return nil, err
 	}
 
