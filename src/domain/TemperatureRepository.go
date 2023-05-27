@@ -11,15 +11,26 @@ type TemperatureRepository interface {
 }
 
 type HumidityRepositoryDTO struct {
-	ID         string    `json:"_id" bson:"_id"`
-	SensorID   string    `json:"sensor_id" bson:"sensor_id"`
-	CreatedAt  time.Time `json:"created_at" bson:"created_at"`
-	Value      int64     `json:"value"`
-	Percentage int64     `json:"percentage"`
+	ID                 string    `json:"_id" bson:"_id"`
+	SensorID           string    `json:"sensor_id" bson:"sensor_id"`
+	CreatedAt          time.Time `json:"created_at" bson:"created_at"`
+	Value              int64     `json:"value"`
+	Percentage         float64   `json:"percentage"`
+	ExponentialAverage []float64 `json:"exponential_average"`
+	MovelAverage       []float64 `json:"movel_average"`
 }
 
 func (hr *HumidityRepositoryDTO) CalculatePercentage() {
 	// 4500 --> 100%
 	// value -> x
-	hr.Percentage = (hr.Value * int64(100)) / int64(4500)
+	hr.Percentage = (float64(hr.Value) * float64(100)) / float64(4500)
+
+}
+
+func (hr *HumidityRepositoryDTO) CalculateExponentialAverage(readings []float64) {
+	hr.MovelAverage = CalculateExponentialAverage(readings, 8)
+}
+
+func (hr *HumidityRepositoryDTO) CalculateMovelAverage(readings []float64) {
+	hr.MovelAverage = CalculateMovingAverage(readings, 8)
 }

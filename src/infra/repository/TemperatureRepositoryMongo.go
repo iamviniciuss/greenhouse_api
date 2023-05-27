@@ -62,14 +62,29 @@ func (erm *TemperatureRepositoryMongo[T]) Create(humidity *domain.HumidityReposi
 		id = mongo.GetObjectIDFromString(humidity.ID)
 	}
 
+	readings := []float64{}
+	last20Values, err := erm.FindLast20Values()
+	if err != nil {
+		return nil, err
+
+	}
+
+	for _, item := range last20Values {
+		readings = append(readings, float64(item.Value))
+	}
+
 	humidity.CalculatePercentage()
+	humidity.CalculateExponentialAverage(readings)
+	humidity.CalculateMovelAverage(readings)
 
 	data := bson.M{
-		"_id":        id,
-		"created_at": time.Now(),
-		"sensor_id":  mongo.GetObjectIDFromString(humidity.SensorID),
-		"value":      humidity.Value,
-		"percentage": humidity.Percentage,
+		"_id":                 id,
+		"created_at":          time.Now(),
+		"sensor_id":           mongo.GetObjectIDFromString(humidity.SensorID),
+		"value":               humidity.Value,
+		"percentage":          humidity.Percentage,
+		"exponential_average": humidity.ExponentialAverage,
+		"movel_average":       humidity.MovelAverage,
 	}
 
 	res, err1 := erm.getCollection("humidity").InsertOne(context.TODO(), data)
@@ -81,6 +96,28 @@ func (erm *TemperatureRepositoryMongo[T]) Create(humidity *domain.HumidityReposi
 	humidity.ID = res.InsertedID.(primitive.ObjectID).Hex()
 
 	return humidity, nil
+}
+
+func (erm *TemperatureRepositoryMongo[T]) FindLast20Values() ([]*domain.HumidityRepositoryDTO, error) {
+	findOptions := options.Find().SetSort(map[string]int{"created_at": -1})
+	findOptions.SetLimit(20)
+	result, err := erm.getCollection("humidity").Find(context.TODO(), bson.M{}, findOptions)
+
+	if err != nil {
+		return nil, err
+	}
+
+	var data []*domain.HumidityRepositoryDTO
+	err = result.All(context.TODO(), &data)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(data) == 0 {
+		return nil, fmt.Errorf("not exists data")
+	}
+
+	return data, err
 }
 
 func (erm *TemperatureRepositoryMongo[T]) FindLastValue(temperature_id string) (*domain.HumidityRepositoryDTO, error) {
