@@ -16,17 +16,17 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-type TemperatureRepositoryMongo[T mongodb.MongoInteface] struct {
+type SoilRepositoryMongo[T mongodb.MongoInteface] struct {
 	connection database.Connection[T]
 }
 
-func NewTemperatureRepositoryMongo(connection database.Connection[mongodb.MongoInteface]) *TemperatureRepositoryMongo[mongodb.MongoInteface] {
-	return &TemperatureRepositoryMongo[mongodb.MongoInteface]{
+func NewSoilRepositoryMongo(connection database.Connection[mongodb.MongoInteface]) *SoilRepositoryMongo[mongodb.MongoInteface] {
+	return &SoilRepositoryMongo[mongodb.MongoInteface]{
 		connection: connection,
 	}
 }
 
-func (erm *TemperatureRepositoryMongo[T]) CreateSensor(sensor *domain.Sensor) (*domain.Sensor, error) {
+func (erm *SoilRepositoryMongo[T]) CreateSensor(sensor *domain.Sensor) (*domain.Sensor, error) {
 	var id primitive.ObjectID
 
 	if sensor.ID == "" {
@@ -53,7 +53,7 @@ func (erm *TemperatureRepositoryMongo[T]) CreateSensor(sensor *domain.Sensor) (*
 	return sensor, nil
 }
 
-func (erm *TemperatureRepositoryMongo[T]) Create(humidity *domain.TemperatureRepositoryDTO) (*domain.TemperatureRepositoryDTO, error) {
+func (erm *SoilRepositoryMongo[T]) Create(humidity *domain.HumidityRepositoryDTO) (*domain.HumidityRepositoryDTO, error) {
 	var id primitive.ObjectID
 
 	if humidity.ID == "" {
@@ -87,7 +87,7 @@ func (erm *TemperatureRepositoryMongo[T]) Create(humidity *domain.TemperatureRep
 		"movel_average":       humidity.MovelAverage,
 	}
 
-	res, err1 := erm.getCollection("temperature").InsertOne(context.TODO(), data)
+	res, err1 := erm.getCollection("humidity").InsertOne(context.TODO(), data)
 
 	if err1 != nil {
 		return nil, err1
@@ -98,16 +98,16 @@ func (erm *TemperatureRepositoryMongo[T]) Create(humidity *domain.TemperatureRep
 	return humidity, nil
 }
 
-func (erm *TemperatureRepositoryMongo[T]) FindLast20Values() ([]*domain.TemperatureRepositoryDTO, error) {
+func (erm *SoilRepositoryMongo[T]) FindLast20Values() ([]*domain.HumidityRepositoryDTO, error) {
 	findOptions := options.Find().SetSort(map[string]int{"created_at": -1})
 	findOptions.SetLimit(20)
-	result, err := erm.getCollection("temperature").Find(context.TODO(), bson.M{}, findOptions)
+	result, err := erm.getCollection("humidity").Find(context.TODO(), bson.M{}, findOptions)
 
 	if err != nil {
 		return nil, err
 	}
 
-	var data []*domain.TemperatureRepositoryDTO
+	var data []*domain.HumidityRepositoryDTO
 	err = result.All(context.TODO(), &data)
 	if err != nil {
 		return nil, err
@@ -120,16 +120,16 @@ func (erm *TemperatureRepositoryMongo[T]) FindLast20Values() ([]*domain.Temperat
 	return data, err
 }
 
-func (erm *TemperatureRepositoryMongo[T]) FindLastValue(temperature_id string) (*domain.TemperatureRepositoryDTO, error) {
+func (erm *SoilRepositoryMongo[T]) FindLastValue(humidity_id string) (*domain.HumidityRepositoryDTO, error) {
 	findOptions := options.Find().SetSort(map[string]int{"created_at": -1})
 
-	result, err := erm.getCollection("temperature").Find(context.TODO(), bson.M{}, findOptions)
+	result, err := erm.getCollection("humidity").Find(context.TODO(), bson.M{}, findOptions)
 
 	if err != nil {
 		return nil, err
 	}
 
-	var data []*domain.TemperatureRepositoryDTO
+	var data []*domain.HumidityRepositoryDTO
 	err = result.All(context.TODO(), &data)
 	if err != nil {
 		return nil, err
@@ -142,7 +142,7 @@ func (erm *TemperatureRepositoryMongo[T]) FindLastValue(temperature_id string) (
 	return data[0], err
 }
 
-func (erm *TemperatureRepositoryMongo[T]) FindSensorById(sensor_id string) (*domain.Sensor, error) {
+func (erm *SoilRepositoryMongo[T]) FindSensorById(sensor_id string) (*domain.Sensor, error) {
 
 	sensor := domain.Sensor{}
 	err := erm.getCollection("sensor").
@@ -152,7 +152,7 @@ func (erm *TemperatureRepositoryMongo[T]) FindSensorById(sensor_id string) (*dom
 	return &sensor, err
 }
 
-func (erm *TemperatureRepositoryMongo[T]) getCollection(collectionName string) *mongo_lib.Collection {
+func (erm *SoilRepositoryMongo[T]) getCollection(collectionName string) *mongo_lib.Collection {
 	return erm.connection.
 		Client().
 		Mongo().
@@ -160,16 +160,16 @@ func (erm *TemperatureRepositoryMongo[T]) getCollection(collectionName string) *
 		Collection(collectionName)
 }
 
-func (erm *TemperatureRepositoryMongo[T]) ListAll() ([]*domain.TemperatureRepositoryDTO, error) {
+func (erm *SoilRepositoryMongo[T]) ListAll() ([]*domain.HumidityRepositoryDTO, error) {
 	findOptions := options.Find().SetSort(map[string]int{"created_at": -1})
 	findOptions.SetLimit(1000)
-	result, err := erm.getCollection("temperature").Find(context.TODO(), bson.M{}, findOptions)
+	result, err := erm.getCollection("humidity").Find(context.TODO(), bson.M{}, findOptions)
 
 	if err != nil {
 		return nil, err
 	}
 
-	var data []*domain.TemperatureRepositoryDTO
+	var data []*domain.HumidityRepositoryDTO
 	err = result.All(context.TODO(), &data)
 	if err != nil {
 		return nil, err

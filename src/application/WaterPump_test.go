@@ -40,7 +40,7 @@ func (suite *WaterPumpTestSuite) Test_Should_Return_Command_To_Turn_On_Water_Pum
 		IdealValue:   []int{20, 26},
 	}
 
-	repository := repository.NewTemperatureRepositoryMock()
+	repository := repository.NewSoilRepositoryMock()
 	repository.On("FindLastValue").Return(&domain.HumidityRepositoryDTO{
 		ID:          "123",
 		SensorID:    "1",
@@ -83,7 +83,7 @@ func (suite *WaterPumpTestSuite) Test_Should_Return_Command_To_Turn_On_Water_Pum
 		IdealValue:   []int{20, 26},
 	}
 
-	repository := repository.NewTemperatureRepositoryMock()
+	repository := repository.NewSoilRepositoryMock()
 	repository.On("FindLastValue").Return(&domain.HumidityRepositoryDTO{
 		ID:          "123",
 		SensorID:    "1",

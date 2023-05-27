@@ -7,22 +7,22 @@ import (
 	http "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/http"
 )
 
-type WaterPumpCtrlOutput struct {
-	TurnOnWaterPump bool `json:"turn_on"`
+type TemperatureOutput struct {
+	Command string `json:"command"`
 }
 
-type WaterPumpCtrl struct {
-	humidityRepository domain.SoilRepository
+type Temperature struct {
+	temperatureRepository domain.TemperatureRepository
 }
 
-func NewWaterPumpCtrl(humidityRepository domain.SoilRepository) *WaterPumpCtrl {
-	return &WaterPumpCtrl{
-		humidityRepository: humidityRepository,
+func NewTemperature(temperatureRepository domain.TemperatureRepository) *Temperature {
+	return &Temperature{
+		temperatureRepository: temperatureRepository,
 	}
 }
 
-func (wpc *WaterPumpCtrl) Execute(params map[string]string, body []byte, queryArgs http.QueryParams) (interface{}, *infra.IntegrationError) {
-	res, err := application.NewManageWaterPump(wpc.humidityRepository).Execute(&domain.Greenhouse{
+func (wpc *Temperature) Execute(params map[string]string, body []byte, queryArgs http.QueryParams) (interface{}, *infra.IntegrationError) {
+	res, err := application.NewManageTemperature(wpc.temperatureRepository).Execute(&domain.Greenhouse{
 		ID:   "01",
 		Name: "ESP32_HOUSE_VINICIUS",
 		Sensors: []*domain.Sensor{
@@ -43,7 +43,7 @@ func (wpc *WaterPumpCtrl) Execute(params map[string]string, body []byte, queryAr
 		return res, &infra.IntegrationError{StatusCode: 400, Message: err.Error()}
 	}
 
-	return &WaterPumpCtrlOutput{
-		TurnOnWaterPump: res.TurnOnWaterPump,
+	return &TemperatureOutput{
+		Command: res.Command,
 	}, nil
 }

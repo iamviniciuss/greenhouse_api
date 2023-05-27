@@ -5,27 +5,27 @@ import (
 	mockTestify "github.com/stretchr/testify/mock"
 )
 
-type TemperatureRepositoryMock struct {
+type SoilRepositoryMock struct {
 	mockTestify.Mock
 }
 
-func NewTemperatureRepositoryMock() *TemperatureRepositoryMock {
-	return &TemperatureRepositoryMock{}
+func NewSoilRepositoryMock() *SoilRepositoryMock {
+	return &SoilRepositoryMock{}
 }
 
-func (st *TemperatureRepositoryMock) FindSensorById(sensor_id string) (*domain.Sensor, error) {
+func (st *SoilRepositoryMock) FindSensorById(sensor_id string) (*domain.Sensor, error) {
 	args := st.Called()
 	output := args.Get(0).(*domain.Sensor)
 	return output, args.Error(1)
 }
 
-func (st *TemperatureRepositoryMock) FindLastValue(temperature_id string) (*domain.HumidityRepositoryDTO, error) {
+func (st *SoilRepositoryMock) FindLastValue(temperature_id string) (*domain.HumidityRepositoryDTO, error) {
 	args := st.Called()
 	output := args.Get(0).(*domain.HumidityRepositoryDTO)
 	return output, args.Error(1)
 }
 
-func (st *TemperatureRepositoryMock) Create(temperature *domain.HumidityRepositoryDTO) (*domain.HumidityRepositoryDTO, error) {
+func (st *SoilRepositoryMock) Create(temperature *domain.HumidityRepositoryDTO) (*domain.HumidityRepositoryDTO, error) {
 	args := st.Called(temperature)
 	output := args.Get(0).(*domain.HumidityRepositoryDTO)
 	return output, args.Error(1)

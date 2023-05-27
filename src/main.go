@@ -9,6 +9,7 @@ import (
 	"github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/repository"
 	healthCheck "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/web/healthcheck"
 	humidity "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/web/v1/humidity"
+	temperature "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/web/v1/temperature"
 )
 
 func main() {
@@ -17,13 +18,15 @@ func main() {
 	mongo := mongodb.NewMongoConnection()
 	mongo.Info()
 
+	soildRepo := repository.NewSoilRepositoryMongo(mongo)
 	repo := repository.NewTemperatureRepositoryMongo(mongo)
 
 	healthCheck.HealthCheckRouter(http)
-	humidity.HumidityRouter(http, repo)
+	humidity.HumidityRouter(http, soildRepo)
+	temperature.TemperatureRouter(http, repo)
 
 	// temperature.NewHandleTemperature().Handler()
-	mqttBroker := broker.NewMQTTBroker(repo)
+	mqttBroker := broker.NewMQTTBroker(soildRepo)
 	mqttClient := mqttBroker.MQTTClient()
 
 	go mqttBroker.MQTTConsumer()

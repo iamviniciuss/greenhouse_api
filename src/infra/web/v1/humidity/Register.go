@@ -14,10 +14,10 @@ type RegisterHumidityCtrlOutput struct {
 }
 
 type RegisterHumidityCtrl struct {
-	humidityRepository domain.TemperatureRepository
+	humidityRepository domain.SoilRepository
 }
 
-func NewRegisterHumidityCtrl(humidityRepository domain.TemperatureRepository) *RegisterHumidityCtrl {
+func NewRegisterHumidityCtrl(humidityRepository domain.SoilRepository) *RegisterHumidityCtrl {
 	return &RegisterHumidityCtrl{
 		humidityRepository: humidityRepository,
 	}

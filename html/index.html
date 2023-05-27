@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Grafico: Umidade do Solo</title>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+	<canvas id="chart"></canvas>
+
+	<script>
+		//Dados do gráfico
+		var data = {
+			labels: [],
+			datasets: [{
+				label: 'Valores',
+				data: [],
+				fill: false,
+				borderColor: 'rgb(75, 192, 192)',
+				lineTension: 0.1
+			}]
+		};
+
+		//Configurações do gráfico
+		var options = {
+			scales: {
+				xAxes: [{
+					type: 'time',
+					time: {
+						displayFormats: {
+							second: 'h:mm:ss a'
+						}
+					},
+					scaleLabel: {
+						display: true,
+						labelString: 'Tempo'
+					}
+				}],
+				yAxes: [{
+					scaleLabel: {
+						display: true,
+						labelString: 'Valor'
+					}
+				}]
+			}
+		};
+
+		//Criação do gráfico
+		var ctx = document.getElementById('chart').getContext('2d');
+		var chart = new Chart(ctx, {
+			type: 'line',
+			data: data,
+			options: options
+		});
+
+
+        var xhr = new XMLHttpRequest();
+        var url = 'http://ec2-52-23-202-61.compute-1.amazonaws.com:3000/greenhouse-api/v1/humidity/list';
+
+        xhr.open('GET', url, true);
+
+        xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            var response = JSON.parse(xhr.responseText);
+            console.log(response[0]);
+            response.sort(()=>{
+
+			}).forEach(function(item) {
+                data.labels.push(item.created_at);
+                data.datasets[0].data.push(item.percentage);
+            });
+
+            chart.update();
+        }
+        };
+
+        xhr.send();
+	</script>
+</body>
+</html>

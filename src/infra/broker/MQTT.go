@@ -24,10 +24,10 @@ type RegisterHumidityCtrlnput struct {
 }
 
 type MQTTBroker struct {
-	humidityRepository domain.TemperatureRepository
+	humidityRepository domain.SoilRepository
 }
 
-func NewMQTTBroker(humidityRepository domain.TemperatureRepository) *MQTTBroker {
+func NewMQTTBroker(humidityRepository domain.SoilRepository) *MQTTBroker {
 	return &MQTTBroker{
 		humidityRepository,
 	}

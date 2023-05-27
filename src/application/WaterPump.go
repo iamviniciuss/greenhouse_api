@@ -10,7 +10,7 @@ import (
 )
 
 type ManageWaterPump struct {
-	domain.TemperatureRepository
+	domain.SoilRepository
 }
 
 type ManageWaterPumpOutput struct {
@@ -19,9 +19,9 @@ type ManageWaterPumpOutput struct {
 	WaterPumpRelay  string
 }
 
-func NewManageWaterPump(tp domain.TemperatureRepository) *ManageWaterPump {
+func NewManageWaterPump(tp domain.SoilRepository) *ManageWaterPump {
 	return &ManageWaterPump{
-		TemperatureRepository: tp,
+		SoilRepository: tp,
 	}
 }
 
@@ -35,13 +35,13 @@ func (m *ManageWaterPump) Execute(greenhouse *domain.Greenhouse) (*ManageWaterPu
 
 	fmt.Println("sensorID:", sensorID)
 
-	humidity, err := m.TemperatureRepository.FindLastValue(sensorID)
+	humidity, err := m.SoilRepository.FindLastValue(sensorID)
 	if err != nil {
 		fmt.Println("not found humidity:")
 		return nil, err
 	}
 
-	sensor, err := m.TemperatureRepository.FindSensorById(humidity.SensorID)
+	sensor, err := m.SoilRepository.FindSensorById(humidity.SensorID)
 	if err != nil {
 		fmt.Println("not found sensor:", humidity.SensorID)
 		return nil, err
