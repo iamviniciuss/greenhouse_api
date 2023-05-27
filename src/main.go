@@ -26,16 +26,23 @@ func main() {
 	temperature.TemperatureRouter(http, repo)
 
 	// temperature.NewHandleTemperature().Handler()
-	mqttBroker := broker.NewMQTTBroker(soildRepo)
+
+	mqttBroker := broker.NewMQTTBroker(soildRepo, os.Getenv("WATER_PUMP_SUBSCRIBE"))
 	mqttClient := mqttBroker.MQTTClient()
 
+	mqttBroker2 := broker.NewMQTTBroker(soildRepo, os.Getenv("TEMPERATURE_SUBSCRIBE"))
+	mqttClient2 := mqttBroker2.MQTTClient()
+
 	go mqttBroker.MQTTConsumer()
+	go mqttBroker2.MQTTConsumer()
 
 	err := http.ListenAndServe(os.Getenv("PORT"))
 	if err != nil {
 		mqttClient.Disconnect(250)
+		mqttClient2.Disconnect(250)
 		panic(err)
 	}
 	mqttClient.Disconnect(250)
+	mqttClient2.Disconnect(250)
 	panic("**** Close app! *****")
 }

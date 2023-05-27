@@ -25,21 +25,23 @@ type RegisterHumidityCtrlnput struct {
 
 type MQTTBroker struct {
 	humidityRepository domain.SoilRepository
+	topic              string
 }
 
-func NewMQTTBroker(humidityRepository domain.SoilRepository) *MQTTBroker {
+func NewMQTTBroker(humidityRepository domain.SoilRepository, topic string) *MQTTBroker {
 	return &MQTTBroker{
 		humidityRepository,
+		topic,
 	}
 }
 
 func (mqb *MQTTBroker) onConnectHandler(client MQTT.Client) {
 	fmt.Println("Connected to broker")
-
-	if token := client.Subscribe(os.Getenv("WATER_PUMP_SUBSCRIBE"), 0, nil); token.Wait() && token.Error() != nil {
+	// os.Getenv("WATER_PUMP_SUBSCRIBE")
+	if token := client.Subscribe(mqb.topic, 0, nil); token.Wait() && token.Error() != nil {
 		panic(token.Error())
 	}
-	fmt.Println("Subscribed to topic")
+	fmt.Println("Subscribed to topic:", mqb.topic)
 }
 
 func (mqb *MQTTBroker) onMessageHandler(client MQTT.Client, msg MQTT.Message) {
