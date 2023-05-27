@@ -28,7 +28,7 @@ func (hr *HumidityRepositoryDTO) CalculatePercentage() {
 }
 
 func (hr *HumidityRepositoryDTO) CalculateExponentialAverage(readings []float64) {
-	hr.MovelAverage = CalculateExponentialAverage(readings, 8)
+	hr.ExponentialAverage = CalculateExponentialAverage(readings, 8)
 }
 
 func (hr *HumidityRepositoryDTO) CalculateMovelAverage(readings []float64) {
