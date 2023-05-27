@@ -68,7 +68,7 @@ func (mqb *MQTTBroker) onMessageHandler(client MQTT.Client, msg MQTT.Message) {
 		}
 
 		fmt.Println("Humidity: ", inputJSON.Humidity)
-		created, err := mqb.humidityRepository.Create(&domain.HumidityRepositoryDTO{
+		_, err = mqb.humidityRepository.Create(&domain.HumidityRepositoryDTO{
 			SensorID: inputJSON.SensorID,
 			Value:    inputJSON.Humidity,
 		})
@@ -77,7 +77,6 @@ func (mqb *MQTTBroker) onMessageHandler(client MQTT.Client, msg MQTT.Message) {
 			fmt.Println(err.Error())
 			return
 		}
-		fmt.Println("created:", created)
 
 		go application.NewManageWaterPump(mqb.humidityRepository).GetCommand(client)
 		return
@@ -92,7 +91,7 @@ func (mqb *MQTTBroker) onMessageHandler(client MQTT.Client, msg MQTT.Message) {
 	}
 
 	fmt.Println("Temperature: ", inputJSON.Temperature)
-	created, err := mqb.temperatureRepository.Create(&domain.TemperatureRepositoryDTO{
+	_, err = mqb.temperatureRepository.Create(&domain.TemperatureRepositoryDTO{
 		SensorID: inputJSON.SensorID,
 		Value:    inputJSON.Temperature,
 	})
@@ -101,7 +100,6 @@ func (mqb *MQTTBroker) onMessageHandler(client MQTT.Client, msg MQTT.Message) {
 		fmt.Println(err.Error())
 		return
 	}
-	fmt.Println("Temperature created:", created)
 
 	go application.NewManageTemperature(mqb.temperatureRepository).GetCommand(client)
 }

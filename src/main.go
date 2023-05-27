@@ -9,6 +9,7 @@ import (
 	"github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/repository"
 	healthCheck "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/web/healthcheck"
 	humidity "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/web/v1/humidity"
+	sensor "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/web/v1/sensor"
 	temperature "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/web/v1/temperature"
 )
 
@@ -24,6 +25,7 @@ func main() {
 	healthCheck.HealthCheckRouter(http)
 	humidity.HumidityRouter(http, soildRepo)
 	temperature.TemperatureRouter(http, repo)
+	sensor.SensorRouter(http, soildRepo)
 
 	mqttBroker := broker.NewMQTTBroker(soildRepo, repo)
 	mqttClient := mqttBroker.MQTTClient("sdk-nodejs-v2")
