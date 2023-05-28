@@ -62,7 +62,7 @@ func (m *ManageTemperature) Execute(greenhouse *domain.Greenhouse) (*ManageTempe
 }
 
 func (m *ManageTemperature) GetCommand(mqttClient MQTT.Client) (*TemperatureCtrlOutput, error) {
-	fmt.Println("Executing GetCommand....")
+	fmt.Println("ManageTemperature - Executing GetCommand")
 
 	greenhouse := &domain.Greenhouse{
 		ID:   "01",

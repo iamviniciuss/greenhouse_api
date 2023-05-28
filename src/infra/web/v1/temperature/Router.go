@@ -6,8 +6,5 @@ import (
 )
 
 func TemperatureRouter(http infra.HttpService, temperatureRepository domain.TemperatureRepository) {
-	http.Get("/greenhouse-api/v1/temperature/list", NewRegisterTemperatureCtrl(temperatureRepository).List)
-	http.Get("/greenhouse-api/v1/temperature", NewTemperature(temperatureRepository).Execute)
-	http.Post("/greenhouse-api/v1/temperature", NewRegisterTemperatureCtrl(temperatureRepository).Execute)
-	http.Post("/greenhouse-api/v1/temperature/sensor", NewRegisterTemperatureCtrl(temperatureRepository).Sensor)
+	http.Get("/greenhouse-api/v1/temperature/list", NewRegisterTemperatureCtrl(temperatureRepository).Execute)
 }
