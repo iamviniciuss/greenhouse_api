@@ -9,10 +9,6 @@ import (
 	http "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/http"
 )
 
-type RegisterHumidityCtrlOutput struct {
-	TurnOnWaterPump bool `json:"turn_on"`
-}
-
 type RegisterHumidityCtrl struct {
 	humidityRepository domain.SoilRepository
 }
@@ -21,11 +17,6 @@ func NewRegisterHumidityCtrl(humidityRepository domain.SoilRepository) *Register
 	return &RegisterHumidityCtrl{
 		humidityRepository: humidityRepository,
 	}
-}
-
-type RegisterHumidityCtrlnput struct {
-	Humidity int64  `json:"humidity,omitempty"`
-	SensorID string `json:"sensor_id,omitempty"`
 }
 
 func (wpc *RegisterHumidityCtrl) Execute(params map[string]string, body []byte, queryArgs http.QueryParams) (interface{}, *infra.IntegrationError) {
@@ -48,37 +39,4 @@ func (wpc *RegisterHumidityCtrl) Execute(params map[string]string, body []byte, 
 	}
 
 	return created, nil
-}
-
-type SensorCtrlnput struct {
-	Sensor domain.Sensor `json:"sensor"`
-}
-
-func (wpc *RegisterHumidityCtrl) Sensor(params map[string]string, body []byte, queryArgs http.QueryParams) (interface{}, *infra.IntegrationError) {
-
-	var inputJSON SensorCtrlnput
-	err := json.Unmarshal(body, &inputJSON)
-
-	if err != nil {
-		return nil, &infra.IntegrationError{StatusCode: 400, Message: err.Error()}
-	}
-
-	created, err := wpc.humidityRepository.CreateSensor(&inputJSON.Sensor)
-
-	if err != nil {
-		return nil, &infra.IntegrationError{StatusCode: 400, Message: err.Error()}
-	}
-
-	return created, nil
-}
-
-func (wpc *RegisterHumidityCtrl) List(params map[string]string, body []byte, queryArgs http.QueryParams) (interface{}, *infra.IntegrationError) {
-
-	all, err := wpc.humidityRepository.ListAll()
-
-	if err != nil {
-		return nil, &infra.IntegrationError{StatusCode: 400, Message: err.Error()}
-	}
-
-	return all, nil
 }

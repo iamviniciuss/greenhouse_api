@@ -9,6 +9,7 @@ import (
 	"github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/repository"
 	healthCheck "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/web/healthcheck"
 	humidity "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/web/v1/humidity"
+	sensor "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/web/v1/sensor"
 	temperature "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/web/v1/temperature"
 )
 
@@ -18,23 +19,29 @@ func main() {
 	mongo := mongodb.NewMongoConnection()
 	mongo.Info()
 
-	soildRepo := repository.NewSoilRepositoryMongo(mongo)
-	repo := repository.NewTemperatureRepositoryMongo(mongo)
+	soildRepository := repository.NewSoilRepositoryMongo(mongo)
+	temperatureRepository := repository.NewTemperatureRepositoryMongo(mongo)
 
 	healthCheck.HealthCheckRouter(http)
-	humidity.HumidityRouter(http, soildRepo)
-	temperature.TemperatureRouter(http, repo)
+	humidity.HumidityRouter(http, soildRepository)
+	temperature.TemperatureRouter(http, temperatureRepository)
+	sensor.SensorRouter(http, soildRepository)
 
-	mqttBroker := broker.NewMQTTBroker(soildRepo, repo)
-	mqttClient := mqttBroker.MQTTClient("sdk-nodejs-v2")
+	mqttBroker := broker.NewMQTTBroker("sdk-nodejs-v2")
+	topicsToConsume := broker.
+		NewTopicsToConsumer().
+		Add(broker.NewTemperatureTopicoCommand(temperatureRepository, mqttBroker.GetClient(), os.Getenv("TEMPERATURE_SUBSCRIBE"))).
+		Add(broker.NewWaterPumpTopicoCommand(soildRepository, mqttBroker.GetClient(), os.Getenv("WATER_PUMP_SUBSCRIBE")))
 
-	go mqttBroker.MQTTConsumer()
+	mqttBroker.SetSubscribeTopics(topicsToConsume)
+
+	go mqttBroker.StartConsumers()
 
 	err := http.ListenAndServe(os.Getenv("PORT"))
 	if err != nil {
-		mqttClient.Disconnect(250)
+		mqttBroker.Disconnect()
 		panic(err)
 	}
-	mqttClient.Disconnect(250)
+	mqttBroker.Disconnect()
 	panic("**** Close app! *****")
 }

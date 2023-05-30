@@ -53,20 +53,21 @@ func (erm *TemperatureRepositoryMongo[T]) CreateSensor(sensor *domain.Sensor) (*
 	return sensor, nil
 }
 
-func (erm *TemperatureRepositoryMongo[T]) Create(humidity *domain.TemperatureRepositoryDTO) (*domain.TemperatureRepositoryDTO, error) {
+func (erm *TemperatureRepositoryMongo[T]) Create(temperature *domain.TemperatureRepositoryDTO) (*domain.TemperatureRepositoryDTO, error) {
 	var id primitive.ObjectID
 
-	if humidity.ID == "" {
+	if temperature.ID == "" {
 		id = primitive.NewObjectID()
 	} else {
-		id = mongo.GetObjectIDFromString(humidity.ID)
+		id = mongo.GetObjectIDFromString(temperature.ID)
 	}
 
 	data := bson.M{
-		"_id":        id,
-		"created_at": time.Now(),
-		"sensor_id":  mongo.GetObjectIDFromString(humidity.SensorID),
-		"value":      humidity.Value,
+		"_id":            id,
+		"created_at":     time.Now(),
+		"sensor_id":      mongo.GetObjectIDFromString(temperature.SensorID),
+		"value":          temperature.Value,
+		"humidity_value": temperature.Humidity,
 	}
 
 	res, err1 := erm.getCollection("temperature").InsertOne(context.TODO(), data)
@@ -75,9 +76,9 @@ func (erm *TemperatureRepositoryMongo[T]) Create(humidity *domain.TemperatureRep
 		return nil, err1
 	}
 
-	humidity.ID = res.InsertedID.(primitive.ObjectID).Hex()
+	temperature.ID = res.InsertedID.(primitive.ObjectID).Hex()
 
-	return humidity, nil
+	return temperature, nil
 }
 
 func (erm *TemperatureRepositoryMongo[T]) FindLast20Values() ([]*domain.TemperatureRepositoryDTO, error) {
