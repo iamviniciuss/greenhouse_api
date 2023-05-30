@@ -18,6 +18,11 @@ func CalculateMovingAverage(readings []float64, window int) []float64 {
 
 // Média Exponencial
 func CalculateExponentialAverage(readings []float64, smoothingFactor float64) []float64 {
+
+	if len(readings) == 0 {
+		return []float64{}
+	}
+
 	exponentialAverage := make([]float64, len(readings))
 	exponentialAverage[0] = readings[0]
 	for i := 1; i < len(readings); i++ {

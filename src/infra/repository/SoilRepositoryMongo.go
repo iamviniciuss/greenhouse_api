@@ -62,7 +62,7 @@ func (erm *SoilRepositoryMongo[T]) Create(humidity *domain.HumidityRepositoryDTO
 		id = mongo.GetObjectIDFromString(humidity.ID)
 	}
 
-	readings := []float64{}
+	// readings := []float64{}
 	// last20Values, err := erm.FindLast20Values()
 	// if err != nil {
 	// 	last20Values = []*domain.HumidityRepositoryDTO{}
@@ -72,7 +72,7 @@ func (erm *SoilRepositoryMongo[T]) Create(humidity *domain.HumidityRepositoryDTO
 	// readings = append(readings, float64(item.Value))
 	// }
 
-	humidity.CalculatePercentage()
+	// humidity.CalculatePercentage()
 	// humidity.CalculateExponentialAverage(readings)
 	// humidity.CalculateMovelAverage(readings)
 
