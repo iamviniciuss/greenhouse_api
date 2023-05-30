@@ -72,7 +72,7 @@ func (erm *SoilRepositoryMongo[T]) Create(humidity *domain.HumidityRepositoryDTO
 	// readings = append(readings, float64(item.Value))
 	// }
 
-	// humidity.CalculatePercentage()
+	humidity.CalculatePercentage()
 	// humidity.CalculateExponentialAverage(readings)
 	// humidity.CalculateMovelAverage(readings)
 
