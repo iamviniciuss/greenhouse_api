@@ -10,6 +10,12 @@ import (
 	MQTT "github.com/eclipse/paho.mqtt.golang"
 )
 
+type RegisterTemperature struct {
+	Humidity    float64 `json:"humidity,omitempty"`
+	Temperature float64 `json:"temperature,omitempty"`
+	SensorID    string  `json:"sensor_id,omitempty"`
+}
+
 type TemperatureTopicoCommand struct {
 	temperatureRepository domain.TemperatureRepository
 	mqttClient            MQTT.Client
@@ -36,7 +42,7 @@ func (c *TemperatureTopicoCommand) Execute(currentTopic string, message []byte) 
 
 	fmt.Println("Executando ação para o TemperatureTopicoCommand")
 
-	var inputJSON RegisterTemperatureCtrlnput
+	var inputJSON RegisterTemperature
 	err := json.Unmarshal(message, &inputJSON)
 
 	if err != nil {
