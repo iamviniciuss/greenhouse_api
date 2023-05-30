@@ -73,17 +73,17 @@ func (erm *SoilRepositoryMongo[T]) Create(humidity *domain.HumidityRepositoryDTO
 	// }
 
 	humidity.CalculatePercentage()
-	humidity.CalculateExponentialAverage(readings)
-	humidity.CalculateMovelAverage(readings)
+	// humidity.CalculateExponentialAverage(readings)
+	// humidity.CalculateMovelAverage(readings)
 
 	data := bson.M{
-		"_id":                 id,
-		"created_at":          time.Now(),
-		"sensor_id":           mongo.GetObjectIDFromString(humidity.SensorID),
-		"value":               humidity.Value,
-		"percentage":          humidity.Percentage,
-		"exponential_average": humidity.ExponentialAverage,
-		"movel_average":       humidity.MovelAverage,
+		"_id":        id,
+		"created_at": time.Now(),
+		"sensor_id":  mongo.GetObjectIDFromString(humidity.SensorID),
+		"value":      humidity.Value,
+		"percentage": humidity.Percentage,
+		// "exponential_average": humidity.ExponentialAverage,
+		// "movel_average":       humidity.MovelAverage,
 	}
 
 	res, err1 := erm.getCollection("humidity").InsertOne(context.TODO(), data)
