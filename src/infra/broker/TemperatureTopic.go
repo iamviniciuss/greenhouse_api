@@ -54,6 +54,7 @@ func (c *TemperatureTopicoCommand) Execute(currentTopic string, message []byte) 
 	_, err = c.temperatureRepository.Create(&domain.TemperatureRepositoryDTO{
 		SensorID: inputJSON.SensorID,
 		Value:    inputJSON.Temperature,
+		Humidity: inputJSON.Humidity,
 	})
 
 	if err != nil {
