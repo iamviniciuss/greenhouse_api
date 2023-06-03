@@ -15,7 +15,7 @@ type TemperatureRepositoryDTO struct {
 	SensorID           string    `json:"sensor_id" bson:"sensor_id"`
 	CreatedAt          time.Time `json:"created_at" bson:"created_at"`
 	Value              float64   `json:"value"`
-	Humidity           float64   `json:"humidity_value"`
+	Humidity           float64   `json:"humidity_value" bson:"humidity_value"`
 	Percentage         float64   `json:"percentage"`
 	ExponentialAverage []float64 `json:"exponential_average"`
 	MovelAverage       []float64 `json:"movel_average"`
