@@ -20,6 +20,8 @@ func (wp *Temperature) ManageState(sensor *Sensor, humidity *TemperatureReposito
 		int(sensor.IdealValue[1]),
 	)
 
+	fmt.Println("**** Temperature Ideal values: ", sensor.IdealValue[0], sensor.IdealValue[1])
+
 	if itTemperatureOk {
 		fmt.Println("Turn off All atuators! The temperature is at the intermediate level.")
 		return &TemperatureState{
