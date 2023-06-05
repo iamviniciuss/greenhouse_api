@@ -75,7 +75,7 @@ func (m *ManageTemperature) GetCommand(mqttClient MQTT.Client) (*TemperatureCtrl
 					ID:   "1",
 					Name: "Bomba d'água",
 				},
-				IdealValue: []int{800, 1638},
+				IdealValue: []int{1400, 1450},
 				Name:       "FC-28 - Sensor de umidade do solo",
 			},
 		},

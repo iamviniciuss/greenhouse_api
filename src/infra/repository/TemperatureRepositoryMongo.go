@@ -145,7 +145,7 @@ func (erm *TemperatureRepositoryMongo[T]) getCollection(collectionName string) *
 
 func (erm *TemperatureRepositoryMongo[T]) ListAll() ([]*domain.TemperatureRepositoryDTO, error) {
 	findOptions := options.Find().SetSort(map[string]int{"created_at": -1})
-	findOptions.SetLimit(1000)
+	// findOptions.SetLimit(1000)
 	result, err := erm.getCollection("temperature").Find(context.TODO(), bson.M{}, findOptions)
 
 	if err != nil {

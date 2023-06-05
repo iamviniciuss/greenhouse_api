@@ -161,7 +161,7 @@ func (erm *SoilRepositoryMongo[T]) getCollection(collectionName string) *mongo_l
 
 func (erm *SoilRepositoryMongo[T]) ListAll() ([]*domain.HumidityRepositoryDTO, error) {
 	findOptions := options.Find().SetSort(map[string]int{"created_at": -1})
-	findOptions.SetLimit(1000)
+	// findOptions.SetLimit(4000)
 	result, err := erm.getCollection("humidity").Find(context.TODO(), bson.M{}, findOptions)
 
 	if err != nil {

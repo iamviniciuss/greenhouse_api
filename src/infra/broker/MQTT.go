@@ -20,6 +20,7 @@ type RegisterHumidityCtrlnput struct {
 
 type RegisterTemperatureCtrlnput struct {
 	Temperature float64 `json:"temperature,omitempty"`
+	Humidity float64 `json:"humidity,omitempty"`
 	SensorID    string  `json:"sensor_id,omitempty"`
 }
 
