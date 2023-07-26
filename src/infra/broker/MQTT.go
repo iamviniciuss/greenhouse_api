@@ -77,7 +77,11 @@ func (mqb *MQTTBroker) GetClient() MQTT.Client {
 }
 
 func (mqb *MQTTBroker) initClient(clientId string) {
-	keysPath := ""
+	ambiente := os.Getenv("AMBIENTE")
+	keysPath := "./keys"
+	if ambiente == "PROD" {
+		keysPath = "/keys"
+	}
 
 	brokerURL := os.Getenv("BROKER_URL")
 	certFile := keysPath + "/greenhouse_01_humidity.cert.pem"
