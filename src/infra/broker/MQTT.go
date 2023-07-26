@@ -80,9 +80,9 @@ func (mqb *MQTTBroker) initClient(clientId string) {
 	keysPath := ""
 
 	brokerURL := os.Getenv("BROKER_URL")
-	certFile := keysPath + os.Getenv("CERT_FILE")
-	keyFile := keysPath + os.Getenv("PRIVATE_FILE")
-	caFile := keysPath + os.Getenv("CA_FILE")
+	certFile := keysPath + "/greenhouse_01_humidity.cert.pem"
+	keyFile := keysPath + "/greenhouse_01_humidity.private.key"
+	caFile := keysPath + "/root-CA.crt"
 
 	opts := MQTT.NewClientOptions()
 	opts.AddBroker(brokerURL)
