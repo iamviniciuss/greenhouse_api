@@ -20,7 +20,7 @@ type RegisterHumidityCtrlnput struct {
 
 type RegisterTemperatureCtrlnput struct {
 	Temperature float64 `json:"temperature,omitempty"`
-	Humidity float64 `json:"humidity,omitempty"`
+	Humidity    float64 `json:"humidity,omitempty"`
 	SensorID    string  `json:"sensor_id,omitempty"`
 }
 
@@ -77,8 +77,7 @@ func (mqb *MQTTBroker) GetClient() MQTT.Client {
 }
 
 func (mqb *MQTTBroker) initClient(clientId string) {
-	basePath, _ := os.Getwd()
-	keysPath := basePath + "/keys/"
+	keysPath := ""
 
 	brokerURL := os.Getenv("BROKER_URL")
 	certFile := keysPath + os.Getenv("CERT_FILE")
@@ -112,14 +111,15 @@ func (mqb *MQTTBroker) StartConsumers() {
 }
 
 func (mqb *MQTTBroker) newTLSConfig(caFile, certFile, keyFile string) *tls.Config {
-	caCert, err := ioutil.ReadFile(caFile)
-	if err != nil {
-		log.Fatal("Error reading CA certificate file:", err)
-	}
 
 	cert, err := tls.LoadX509KeyPair(certFile, keyFile)
 	if err != nil {
 		log.Fatal("Error loading certificate file:", err)
+	}
+
+	caCert, err := ioutil.ReadFile(caFile)
+	if err != nil {
+		log.Fatal("Error reading CA certificate file:", err)
 	}
 
 	caCertPool := x509.NewCertPool()

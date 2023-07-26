@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/broker"
@@ -15,6 +16,7 @@ import (
 
 func main() {
 
+	hostname, _ := os.Hostname()
 	http := httpService.NewFiberHttp()
 	mongo := mongodb.NewMongoConnection()
 	mongo.Info()
@@ -27,7 +29,9 @@ func main() {
 	temperature.TemperatureRouter(http, temperatureRepository)
 	sensor.SensorRouter(http, soildRepository)
 
-	mqttBroker := broker.NewMQTTBroker("sdk-nodejs-v2")
+	brokerClient := "esp32/greenhouse-" + hostname
+	fmt.Println("Broker Client:", brokerClient)
+	mqttBroker := broker.NewMQTTBroker(brokerClient)
 	topicsToConsume := broker.
 		NewTopicsToConsumer().
 		Add(broker.NewTemperatureTopicoCommand(temperatureRepository, mqttBroker.GetClient(), os.Getenv("TEMPERATURE_SUBSCRIBE"))).
