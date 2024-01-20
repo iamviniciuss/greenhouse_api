@@ -38,10 +38,10 @@ func (suite *ManageTemperatureTestSuite) Test_Should_Return_Command_To_Turn_Off_
 	}
 
 	humidity := &HumidityRepositoryDTO{
-		ID:          "123",
-		SensorID:    "1",
-		CreatedAt:   time.Now().UTC(),
-		Temperature: 20,
+		ID:        "123",
+		SensorID:  "1",
+		CreatedAt: time.Now().UTC(),
+		Value:     24,
 	}
 
 	waterPump := NewWaterPumpState()
@@ -73,10 +73,10 @@ func (suite *ManageTemperatureTestSuite) Test_Should_Return_Command_To_Turn_On_W
 	}
 
 	humidity := &HumidityRepositoryDTO{
-		ID:          "123",
-		SensorID:    "1",
-		CreatedAt:   time.Now().UTC(),
-		Temperature: 19,
+		ID:        "123",
+		SensorID:  "1",
+		CreatedAt: time.Now().UTC(),
+		Value:     19,
 	}
 
 	waterPump := NewWaterPumpState()
@@ -108,10 +108,10 @@ func (suite *ManageTemperatureTestSuite) Test_Should_Return_Command_To_Turn_On_W
 	}
 
 	humidity := &HumidityRepositoryDTO{
-		ID:          "123",
-		SensorID:    "1",
-		CreatedAt:   time.Now().UTC(),
-		Temperature: 27,
+		ID:        "123",
+		SensorID:  "1",
+		CreatedAt: time.Now().UTC(),
+		Value:     27,
 	}
 
 	waterPump := NewWaterPumpState()

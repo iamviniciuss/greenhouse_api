@@ -21,9 +21,6 @@ type HumidityRepositoryDTO struct {
 }
 
 func (hr *HumidityRepositoryDTO) CalculatePercentage() {
-	// 4500 --> 100%
-	// value -> x
-	// hr.Percentage = (float64(float64(4095) - float64(hr.Value)) * float64(100)) / float64(4095 - 1400)
 	hr.Percentage = (float64(hr.Value) * float64(100)) / float64(4095)
 
 }

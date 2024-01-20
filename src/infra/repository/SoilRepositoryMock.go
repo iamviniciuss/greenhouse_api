@@ -30,3 +30,15 @@ func (st *SoilRepositoryMock) Create(temperature *domain.HumidityRepositoryDTO) 
 	output := args.Get(0).(*domain.HumidityRepositoryDTO)
 	return output, args.Error(1)
 }
+
+func (st *SoilRepositoryMock) ListAll() ([]*domain.HumidityRepositoryDTO, error) {
+	args := st.Called()
+	output := args.Get(0).([]*domain.HumidityRepositoryDTO)
+	return output, args.Error(1)
+}
+
+func (st *SoilRepositoryMock) CreateSensor(sensor *domain.Sensor) (*domain.Sensor, error) {
+	args := st.Called(sensor)
+	output := args.Get(0).(*domain.Sensor)
+	return output, args.Error(1)
+}

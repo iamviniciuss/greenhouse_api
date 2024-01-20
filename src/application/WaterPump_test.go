@@ -42,10 +42,10 @@ func (suite *WaterPumpTestSuite) Test_Should_Return_Command_To_Turn_On_Water_Pum
 
 	repository := repository.NewSoilRepositoryMock()
 	repository.On("FindLastValue").Return(&domain.HumidityRepositoryDTO{
-		ID:          "123",
-		SensorID:    "1",
-		CreatedAt:   time.Now().UTC(),
-		Temperature: 16,
+		ID:        "123",
+		SensorID:  "1",
+		CreatedAt: time.Now().UTC(),
+		Value:     16,
 	}, nil)
 
 	repository.On("FindSensorById").Return(sensor, nil)
@@ -85,10 +85,10 @@ func (suite *WaterPumpTestSuite) Test_Should_Return_Command_To_Turn_On_Water_Pum
 
 	repository := repository.NewSoilRepositoryMock()
 	repository.On("FindLastValue").Return(&domain.HumidityRepositoryDTO{
-		ID:          "123",
-		SensorID:    "1",
-		CreatedAt:   time.Now().UTC(),
-		Temperature: 27,
+		ID:        "123",
+		SensorID:  "1",
+		CreatedAt: time.Now().UTC(),
+		Value:     27,
 	}, nil)
 
 	repository.On("FindSensorById").Return(sensor, nil)

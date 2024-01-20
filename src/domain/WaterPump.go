@@ -3,6 +3,7 @@ package domain
 import (
 	"fmt"
 )
+
 type WaterPump struct {
 }
 
@@ -16,7 +17,6 @@ func NewWaterPumpState() *WaterPump {
 
 func (wp *WaterPump) ManageState(sensor *Sensor, humidity *HumidityRepositoryDTO) (*WaterPumpState, error) {
 	itHumidityOk := isInRange(
-		// int(humidity.Value)+(int(sensor.IdealValue[0])/int(sensor.IdealValue[1])),
 		int(humidity.Value),
 		int(sensor.IdealValue[0]),
 		int(sensor.IdealValue[1]),
@@ -32,7 +32,7 @@ func (wp *WaterPump) ManageState(sensor *Sensor, humidity *HumidityRepositoryDTO
 	}
 
 	itIsHighHumidity := humidityIsHigh(int(humidity.Value), int(sensor.IdealValue[1]))
-	if !itIsHighHumidity {
+	if itIsHighHumidity {
 		fmt.Println("High Humidity! Turn off water pump!")
 		return &WaterPumpState{
 			TurnOnWaterPump: false,
