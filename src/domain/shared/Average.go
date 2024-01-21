@@ -1,6 +1,5 @@
 package domain
 
-// Média Móvel
 func CalculateMovingAverage(readings []float64, window int) []float64 {
 	movingAverage := make([]float64, len(readings))
 	for i := 0; i < len(readings); i++ {

@@ -1,6 +1,10 @@
 package domain
 
-import "time"
+import (
+	"time"
+
+	shared "github.com/iamviniciuss/greenhouse_api/src/domain/shared"
+)
 
 type SoilRepository interface {
 	FindSensorById(id string) (*Sensor, error)
@@ -17,7 +21,7 @@ type HumidityRepositoryDTO struct {
 	Value              int64     `json:"value"`
 	Percentage         float64   `json:"percentage"`
 	ExponentialAverage []float64 `json:"exponential_average"`
-	MovelAverage       []float64 `json:"movel_average"`
+	MoveAverage        []float64 `json:"movel_average"`
 }
 
 func (hr *HumidityRepositoryDTO) CalculatePercentage() {
@@ -26,9 +30,9 @@ func (hr *HumidityRepositoryDTO) CalculatePercentage() {
 }
 
 func (hr *HumidityRepositoryDTO) CalculateExponentialAverage(readings []float64) {
-	hr.ExponentialAverage = CalculateExponentialAverage(readings, 8)
+	hr.ExponentialAverage = shared.CalculateExponentialAverage(readings, 8)
 }
 
-func (hr *HumidityRepositoryDTO) CalculateMovelAverage(readings []float64) {
-	hr.MovelAverage = CalculateMovingAverage(readings, 8)
+func (hr *HumidityRepositoryDTO) CalculateMovingAverage(readings []float64) {
+	hr.MoveAverage = shared.CalculateMovingAverage(readings, 8)
 }

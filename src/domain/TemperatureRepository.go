@@ -1,6 +1,10 @@
 package domain
 
-import "time"
+import (
+	"time"
+
+	shared "github.com/iamviniciuss/greenhouse_api/src/domain/shared"
+)
 
 type TemperatureRepository interface {
 	FindSensorById(id string) (*Sensor, error)
@@ -27,9 +31,9 @@ func (hr *TemperatureRepositoryDTO) CalculatePercentage() {
 }
 
 func (hr *TemperatureRepositoryDTO) CalculateExponentialAverage(readings []float64) {
-	hr.ExponentialAverage = CalculateExponentialAverage(readings, 8)
+	hr.ExponentialAverage = shared.CalculateExponentialAverage(readings, 8)
 }
 
-func (hr *TemperatureRepositoryDTO) CalculateMovelAverage(readings []float64) {
-	hr.MovelAverage = CalculateMovingAverage(readings, 8)
+func (hr *TemperatureRepositoryDTO) CalculateMovingAverage(readings []float64) {
+	hr.MovelAverage = shared.CalculateMovingAverage(readings, 8)
 }
