@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 
-	errors "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/errors"
-	http "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/http"
+	errors "github.com/iamviniciuss/greenhouse_api/src/infra/errors"
+	http "github.com/iamviniciuss/greenhouse_api/src/infra/http"
 )
 
 type AWSSecret struct {

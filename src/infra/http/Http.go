@@ -1,6 +1,6 @@
 package infra
 
-import infra "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/errors"
+import infra "github.com/iamviniciuss/greenhouse_api/src/infra/errors"
 
 type HttpService interface {
 	Get(path string, callback func(map[string]string, []byte, QueryParams) (interface{}, *infra.IntegrationError))

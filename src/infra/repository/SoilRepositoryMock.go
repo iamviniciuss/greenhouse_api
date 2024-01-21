@@ -1,7 +1,7 @@
 package repository
 
 import (
-	domain "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/domain"
+	domain "github.com/iamviniciuss/greenhouse_api/src/domain"
 	mockTestify "github.com/stretchr/testify/mock"
 )
 

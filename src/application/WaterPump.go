@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 
-	domain "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/domain"
 	MQTT "github.com/eclipse/paho.mqtt.golang"
+	domain "github.com/iamviniciuss/greenhouse_api/src/domain"
 )
 
 type ManageWaterPump struct {
@@ -68,7 +68,7 @@ func (m *ManageWaterPump) GetCommand(mqttClient MQTT.Client) (*WaterPumpCtrlOutp
 		ID:   "01",
 		Name: "ESP32_HOUSE_VINICIUS",
 		Sensors: []*domain.Sensor{
-			&domain.Sensor{
+			{
 				ID:            "645d82f4d2d163d2edc380a5",
 				Envoironments: &domain.Envoironment{},
 				Actuator: &domain.Actuator{

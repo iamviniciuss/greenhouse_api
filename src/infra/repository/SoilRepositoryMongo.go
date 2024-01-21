@@ -6,10 +6,10 @@ import (
 	"os"
 	"time"
 
-	domain "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/domain"
-	"github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/database"
-	"github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/database/mongodb"
-	"github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/util/mongo"
+	domain "github.com/iamviniciuss/greenhouse_api/src/domain"
+	"github.com/iamviniciuss/greenhouse_api/src/infra/database"
+	"github.com/iamviniciuss/greenhouse_api/src/infra/database/mongodb"
+	"github.com/iamviniciuss/greenhouse_api/src/util/mongo"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	mongo_lib "go.mongodb.org/mongo-driver/mongo"
@@ -62,19 +62,7 @@ func (erm *SoilRepositoryMongo[T]) Create(humidity *domain.HumidityRepositoryDTO
 		id = mongo.GetObjectIDFromString(humidity.ID)
 	}
 
-	// readings := []float64{}
-	// last20Values, err := erm.FindLast20Values()
-	// if err != nil {
-	// 	last20Values = []*domain.HumidityRepositoryDTO{}
-	// }
-
-	// for _, item := range last20Values {
-	// readings = append(readings, float64(item.Value))
-	// }
-
 	humidity.CalculatePercentage()
-	// humidity.CalculateExponentialAverage(readings)
-	// humidity.CalculateMovelAverage(readings)
 
 	data := bson.M{
 		"_id":        id,
@@ -82,8 +70,6 @@ func (erm *SoilRepositoryMongo[T]) Create(humidity *domain.HumidityRepositoryDTO
 		"sensor_id":  mongo.GetObjectIDFromString(humidity.SensorID),
 		"value":      humidity.Value,
 		"percentage": humidity.Percentage,
-		// "exponential_average": humidity.ExponentialAverage,
-		// "movel_average":       humidity.MovelAverage,
 	}
 
 	res, err1 := erm.getCollection("humidity").InsertOne(context.TODO(), data)

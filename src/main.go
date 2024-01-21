@@ -4,14 +4,14 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/broker"
-	mongodb "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/database/mongodb"
-	httpService "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/http"
-	"github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/repository"
-	healthCheck "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/web/healthcheck"
-	humidity "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/web/v1/humidity"
-	sensor "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/web/v1/sensor"
-	temperature "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/web/v1/temperature"
+	"github.com/iamviniciuss/greenhouse_api/src/infra/broker"
+	mongodb "github.com/iamviniciuss/greenhouse_api/src/infra/database/mongodb"
+	httpService "github.com/iamviniciuss/greenhouse_api/src/infra/http"
+	"github.com/iamviniciuss/greenhouse_api/src/infra/repository"
+	healthCheck "github.com/iamviniciuss/greenhouse_api/src/infra/web/healthcheck"
+	humidity "github.com/iamviniciuss/greenhouse_api/src/infra/web/v1/humidity"
+	sensor "github.com/iamviniciuss/greenhouse_api/src/infra/web/v1/sensor"
+	temperature "github.com/iamviniciuss/greenhouse_api/src/infra/web/v1/temperature"
 )
 
 func main() {

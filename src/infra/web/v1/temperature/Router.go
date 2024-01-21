@@ -1,8 +1,8 @@
 package infra
 
 import (
-	domain "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/domain"
-	infra "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/http"
+	domain "github.com/iamviniciuss/greenhouse_api/src/domain"
+	infra "github.com/iamviniciuss/greenhouse_api/src/infra/http"
 )
 
 func TemperatureRouter(http infra.HttpService, temperatureRepository domain.TemperatureRepository) {

@@ -1,9 +1,9 @@
 package infra
 
 import (
-	infra "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/errors"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	infra "github.com/iamviniciuss/greenhouse_api/src/infra/errors"
 	"github.com/valyala/fasthttp"
 )
 

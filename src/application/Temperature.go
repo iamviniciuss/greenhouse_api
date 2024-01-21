@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 
-	domain "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/domain"
 	MQTT "github.com/eclipse/paho.mqtt.golang"
+	domain "github.com/iamviniciuss/greenhouse_api/src/domain"
 )
 
 type ManageTemperature struct {

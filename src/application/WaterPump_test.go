@@ -3,8 +3,8 @@ package application
 import (
 	"time"
 
-	domain "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/domain"
-	repository "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/repository"
+	domain "github.com/iamviniciuss/greenhouse_api/src/domain"
+	repository "github.com/iamviniciuss/greenhouse_api/src/infra/repository"
 
 	"testing"
 

@@ -3,9 +3,9 @@ package infra
 import (
 	"encoding/json"
 
-	"github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/domain"
-	infra "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/errors"
-	http "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/http"
+	"github.com/iamviniciuss/greenhouse_api/src/domain"
+	infra "github.com/iamviniciuss/greenhouse_api/src/infra/errors"
+	http "github.com/iamviniciuss/greenhouse_api/src/infra/http"
 )
 
 type SensorCtrlnput struct {

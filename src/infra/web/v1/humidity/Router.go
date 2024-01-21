@@ -1,11 +1,11 @@
 package infra
 
 import (
-	domain "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/domain"
-	infra "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/http"
-	list "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/web/v1/humidity/list-all"
-	manage_water_pump "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/web/v1/humidity/manage-water-pump"
-	register "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/web/v1/humidity/register"
+	domain "github.com/iamviniciuss/greenhouse_api/src/domain"
+	infra "github.com/iamviniciuss/greenhouse_api/src/infra/http"
+	list "github.com/iamviniciuss/greenhouse_api/src/infra/web/v1/humidity/list-all"
+	manage_water_pump "github.com/iamviniciuss/greenhouse_api/src/infra/web/v1/humidity/manage-water-pump"
+	register "github.com/iamviniciuss/greenhouse_api/src/infra/web/v1/humidity/register"
 )
 
 func HumidityRouter(http infra.HttpService, humidityRepository domain.SoilRepository) {

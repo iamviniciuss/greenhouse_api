@@ -1,9 +1,9 @@
 package infra
 
 import (
-	domain "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/domain"
-	infra "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/http"
-	create_sensor "github.com/Vinicius-Santos-da-Silva/greenhouse_api/src/infra/web/v1/sensor/create"
+	domain "github.com/iamviniciuss/greenhouse_api/src/domain"
+	infra "github.com/iamviniciuss/greenhouse_api/src/infra/http"
+	create_sensor "github.com/iamviniciuss/greenhouse_api/src/infra/web/v1/sensor/create"
 )
 
 func SensorRouter(http infra.HttpService, humidityRepository domain.SoilRepository) {
