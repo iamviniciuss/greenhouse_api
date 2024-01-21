@@ -1,7 +1,7 @@
 package infra
 
 import (
-	domain "github.com/iamviniciuss/greenhouse_api/src/domain"
+	repository "github.com/iamviniciuss/greenhouse_api/src/domain/repository"
 	infra "github.com/iamviniciuss/greenhouse_api/src/infra/errors"
 	http "github.com/iamviniciuss/greenhouse_api/src/infra/http"
 )
@@ -11,10 +11,10 @@ type RegisterTemperatureCtrlOutput struct {
 }
 
 type RegisterTemperatureCtrl struct {
-	TemperatureRepository domain.TemperatureRepository
+	TemperatureRepository repository.TemperatureRepository
 }
 
-func NewRegisterTemperatureCtrl(temperatureRepository domain.TemperatureRepository) *RegisterTemperatureCtrl {
+func NewRegisterTemperatureCtrl(temperatureRepository repository.TemperatureRepository) *RegisterTemperatureCtrl {
 	return &RegisterTemperatureCtrl{
 		TemperatureRepository: temperatureRepository,
 	}

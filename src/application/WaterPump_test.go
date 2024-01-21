@@ -3,7 +3,8 @@ package application
 import (
 	"time"
 
-	domain "github.com/iamviniciuss/greenhouse_api/src/domain"
+	repository_domain "github.com/iamviniciuss/greenhouse_api/src/domain/repository"
+	shared "github.com/iamviniciuss/greenhouse_api/src/domain/shared"
 	repository "github.com/iamviniciuss/greenhouse_api/src/infra/repository"
 
 	"testing"
@@ -20,20 +21,20 @@ func TestWaterPumpTestSuite(t *testing.T) {
 }
 
 func (suite *WaterPumpTestSuite) Test_Should_Return_Command_To_Turn_On_Water_Pump() {
-	env := &domain.Envoironment{
+	env := &shared.Envoironment{
 		ID:           "1",
 		Name:         "Humidity",
 		GreenhouseID: "1",
 	}
 
-	sensor := &domain.Sensor{
+	sensor := &shared.Sensor{
 		ID:            "1",
 		Envoironments: env,
-		Actuator: &domain.Actuator{
+		Actuator: &shared.Actuator{
 			ID:            "6",
 			Name:          "Water Pump",
 			Envoironments: env,
-			Sensor:        &domain.Sensor{},
+			Sensor:        &shared.Sensor{},
 		},
 		Name:         "Humidity Soil 01",
 		GreenhouseID: "1",
@@ -41,7 +42,7 @@ func (suite *WaterPumpTestSuite) Test_Should_Return_Command_To_Turn_On_Water_Pum
 	}
 
 	repository := repository.NewSoilRepositoryMock()
-	repository.On("FindLastValue").Return(&domain.HumidityRepositoryDTO{
+	repository.On("FindLastValue").Return(&repository_domain.HumidityRepositoryDTO{
 		ID:        "123",
 		SensorID:  "1",
 		CreatedAt: time.Now().UTC(),
@@ -52,10 +53,10 @@ func (suite *WaterPumpTestSuite) Test_Should_Return_Command_To_Turn_On_Water_Pum
 
 	useCase := NewManageWaterPump(repository)
 
-	output, err := useCase.Execute(&domain.Greenhouse{
+	output, err := useCase.Execute(&shared.Greenhouse{
 		ID:      "1",
 		Name:    "Saint's House",
-		Sensors: []*domain.Sensor{sensor},
+		Sensors: []*shared.Sensor{sensor},
 	})
 
 	suite.Nil(err)
@@ -63,20 +64,20 @@ func (suite *WaterPumpTestSuite) Test_Should_Return_Command_To_Turn_On_Water_Pum
 }
 
 func (suite *WaterPumpTestSuite) Test_Should_Return_Command_To_Turn_On_Water_Pump_When_Humidity_Is_More_Than_Of_Ideal() {
-	env := &domain.Envoironment{
+	env := &shared.Envoironment{
 		ID:           "1",
 		Name:         "Humidity",
 		GreenhouseID: "1",
 	}
 
-	sensor := &domain.Sensor{
+	sensor := &shared.Sensor{
 		ID:            "1",
 		Envoironments: env,
-		Actuator: &domain.Actuator{
+		Actuator: &shared.Actuator{
 			ID:            "6",
 			Name:          "Water Pump",
 			Envoironments: env,
-			Sensor:        &domain.Sensor{},
+			Sensor:        &shared.Sensor{},
 		},
 		Name:         "Humidity Soil 01",
 		GreenhouseID: "1",
@@ -84,7 +85,7 @@ func (suite *WaterPumpTestSuite) Test_Should_Return_Command_To_Turn_On_Water_Pum
 	}
 
 	repository := repository.NewSoilRepositoryMock()
-	repository.On("FindLastValue").Return(&domain.HumidityRepositoryDTO{
+	repository.On("FindLastValue").Return(&repository_domain.HumidityRepositoryDTO{
 		ID:        "123",
 		SensorID:  "1",
 		CreatedAt: time.Now().UTC(),
@@ -95,10 +96,10 @@ func (suite *WaterPumpTestSuite) Test_Should_Return_Command_To_Turn_On_Water_Pum
 
 	useCase := NewManageWaterPump(repository)
 
-	output, err := useCase.Execute(&domain.Greenhouse{
+	output, err := useCase.Execute(&shared.Greenhouse{
 		ID:      "1",
 		Name:    "Saint's House",
-		Sensors: []*domain.Sensor{sensor},
+		Sensors: []*shared.Sensor{sensor},
 	})
 
 	suite.Nil(err)

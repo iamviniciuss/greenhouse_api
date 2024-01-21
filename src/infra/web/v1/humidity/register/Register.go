@@ -4,16 +4,16 @@ import (
 	"encoding/json"
 	"fmt"
 
-	domain "github.com/iamviniciuss/greenhouse_api/src/domain"
+	repository "github.com/iamviniciuss/greenhouse_api/src/domain/repository"
 	infra "github.com/iamviniciuss/greenhouse_api/src/infra/errors"
 	http "github.com/iamviniciuss/greenhouse_api/src/infra/http"
 )
 
 type RegisterHumidityCtrl struct {
-	humidityRepository domain.SoilRepository
+	humidityRepository repository.SoilRepository
 }
 
-func NewRegisterHumidityCtrl(humidityRepository domain.SoilRepository) *RegisterHumidityCtrl {
+func NewRegisterHumidityCtrl(humidityRepository repository.SoilRepository) *RegisterHumidityCtrl {
 	return &RegisterHumidityCtrl{
 		humidityRepository: humidityRepository,
 	}
@@ -29,7 +29,7 @@ func (wpc *RegisterHumidityCtrl) Execute(params map[string]string, body []byte, 
 	}
 
 	fmt.Println("Humidity: ", inputJSON.Humidity)
-	created, err := wpc.humidityRepository.Create(&domain.HumidityRepositoryDTO{
+	created, err := wpc.humidityRepository.Create(&repository.HumidityRepositoryDTO{
 		SensorID: inputJSON.SensorID,
 		Value:    inputJSON.Humidity,
 	})

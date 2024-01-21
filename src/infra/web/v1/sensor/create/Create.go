@@ -3,20 +3,21 @@ package infra
 import (
 	"encoding/json"
 
-	"github.com/iamviniciuss/greenhouse_api/src/domain"
+	repository "github.com/iamviniciuss/greenhouse_api/src/domain/repository"
+	shared "github.com/iamviniciuss/greenhouse_api/src/domain/shared"
 	infra "github.com/iamviniciuss/greenhouse_api/src/infra/errors"
 	http "github.com/iamviniciuss/greenhouse_api/src/infra/http"
 )
 
 type SensorCtrlnput struct {
-	Sensor domain.Sensor `json:"sensor"`
+	Sensor shared.Sensor `json:"sensor"`
 }
 
 type CreateSensorCtrl struct {
-	humidityRepository domain.SoilRepository
+	humidityRepository repository.SoilRepository
 }
 
-func NewCreateSensorCtrl(humidityRepository domain.SoilRepository) *CreateSensorCtrl {
+func NewCreateSensorCtrl(humidityRepository repository.SoilRepository) *CreateSensorCtrl {
 	return &CreateSensorCtrl{
 		humidityRepository: humidityRepository,
 	}

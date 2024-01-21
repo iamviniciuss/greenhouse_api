@@ -2,7 +2,8 @@ package infra
 
 import (
 	application "github.com/iamviniciuss/greenhouse_api/src/application"
-	domain "github.com/iamviniciuss/greenhouse_api/src/domain"
+	repository "github.com/iamviniciuss/greenhouse_api/src/domain/repository"
+	domain "github.com/iamviniciuss/greenhouse_api/src/domain/shared"
 	infra "github.com/iamviniciuss/greenhouse_api/src/infra/errors"
 	http "github.com/iamviniciuss/greenhouse_api/src/infra/http"
 )
@@ -12,10 +13,10 @@ type WaterPumpCtrlOutput struct {
 }
 
 type WaterPumpCtrl struct {
-	humidityRepository domain.SoilRepository
+	humidityRepository repository.SoilRepository
 }
 
-func NewWaterPumpCtrl(humidityRepository domain.SoilRepository) *WaterPumpCtrl {
+func NewWaterPumpCtrl(humidityRepository repository.SoilRepository) *WaterPumpCtrl {
 	return &WaterPumpCtrl{
 		humidityRepository: humidityRepository,
 	}

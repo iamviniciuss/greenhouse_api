@@ -1,16 +1,16 @@
 package infra
 
 import (
-	"github.com/iamviniciuss/greenhouse_api/src/domain"
+	repository "github.com/iamviniciuss/greenhouse_api/src/domain/repository"
 	infra "github.com/iamviniciuss/greenhouse_api/src/infra/errors"
 	http "github.com/iamviniciuss/greenhouse_api/src/infra/http"
 )
 
 type ListAllHumidityCtrl struct {
-	humidityRepository domain.SoilRepository
+	humidityRepository repository.SoilRepository
 }
 
-func NewListAllHumidityCtrl(humidityRepository domain.SoilRepository) *ListAllHumidityCtrl {
+func NewListAllHumidityCtrl(humidityRepository repository.SoilRepository) *ListAllHumidityCtrl {
 	return &ListAllHumidityCtrl{
 		humidityRepository: humidityRepository,
 	}

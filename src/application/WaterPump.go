@@ -5,12 +5,15 @@ import (
 	"fmt"
 	"os"
 
+	repository "github.com/iamviniciuss/greenhouse_api/src/domain/repository"
+	shared "github.com/iamviniciuss/greenhouse_api/src/domain/shared"
+	soil_domain "github.com/iamviniciuss/greenhouse_api/src/domain/soil"
+
 	MQTT "github.com/eclipse/paho.mqtt.golang"
-	domain "github.com/iamviniciuss/greenhouse_api/src/domain"
 )
 
 type ManageWaterPump struct {
-	domain.SoilRepository
+	repository.SoilRepository
 }
 
 type ManageWaterPumpOutput struct {
@@ -19,13 +22,13 @@ type ManageWaterPumpOutput struct {
 	WaterPumpRelay  string
 }
 
-func NewManageWaterPump(tp domain.SoilRepository) *ManageWaterPump {
+func NewManageWaterPump(tp repository.SoilRepository) *ManageWaterPump {
 	return &ManageWaterPump{
 		SoilRepository: tp,
 	}
 }
 
-func (m *ManageWaterPump) Execute(greenhouse *domain.Greenhouse) (*ManageWaterPumpOutput, error) {
+func (m *ManageWaterPump) Execute(greenhouse *shared.Greenhouse) (*ManageWaterPumpOutput, error) {
 
 	if len(greenhouse.Sensors) == 0 {
 		return nil, fmt.Errorf("there aren't any sensors")
@@ -47,7 +50,7 @@ func (m *ManageWaterPump) Execute(greenhouse *domain.Greenhouse) (*ManageWaterPu
 		return nil, err
 	}
 
-	output, err := domain.NewWaterPumpState().ManageState(sensor, humidity)
+	output, err := soil_domain.NewWaterPumpState().ManageState(sensor, humidity)
 	if err != nil {
 		// fmt.Println("not found NewWaterPumpState:")
 		return nil, err
@@ -64,14 +67,14 @@ func (m *ManageWaterPump) Execute(greenhouse *domain.Greenhouse) (*ManageWaterPu
 func (m *ManageWaterPump) GetCommand(mqttClient MQTT.Client) (*WaterPumpCtrlOutput, error) {
 	fmt.Println("Executing GetCommand....")
 
-	greenhouse := &domain.Greenhouse{
+	greenhouse := &shared.Greenhouse{
 		ID:   "01",
 		Name: "ESP32_HOUSE_VINICIUS",
-		Sensors: []*domain.Sensor{
+		Sensors: []*shared.Sensor{
 			{
 				ID:            "645d82f4d2d163d2edc380a5",
-				Envoironments: &domain.Envoironment{},
-				Actuator: &domain.Actuator{
+				Envoironments: &shared.Envoironment{},
+				Actuator: &shared.Actuator{
 					ID:   "1",
 					Name: "Bomba d'água",
 				},

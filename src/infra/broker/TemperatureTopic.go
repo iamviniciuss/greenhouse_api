@@ -7,7 +7,7 @@ import (
 
 	MQTT "github.com/eclipse/paho.mqtt.golang"
 	application "github.com/iamviniciuss/greenhouse_api/src/application"
-	domain "github.com/iamviniciuss/greenhouse_api/src/domain"
+	repository "github.com/iamviniciuss/greenhouse_api/src/domain/repository"
 )
 
 type RegisterTemperature struct {
@@ -17,12 +17,12 @@ type RegisterTemperature struct {
 }
 
 type TemperatureTopicoCommand struct {
-	temperatureRepository domain.TemperatureRepository
+	temperatureRepository repository.TemperatureRepository
 	mqttClient            MQTT.Client
 	Topico                string
 }
 
-func NewTemperatureTopicoCommand(temperatureRepository domain.TemperatureRepository, client MQTT.Client, topic string) *TemperatureTopicoCommand {
+func NewTemperatureTopicoCommand(temperatureRepository repository.TemperatureRepository, client MQTT.Client, topic string) *TemperatureTopicoCommand {
 	return &TemperatureTopicoCommand{
 		Topico:                topic,
 		temperatureRepository: temperatureRepository,
@@ -51,7 +51,7 @@ func (c *TemperatureTopicoCommand) Execute(currentTopic string, message []byte) 
 	}
 
 	fmt.Println("Temperature: ", inputJSON.Temperature)
-	_, err = c.temperatureRepository.Create(&domain.TemperatureRepositoryDTO{
+	_, err = c.temperatureRepository.Create(&repository.TemperatureRepositoryDTO{
 		SensorID: inputJSON.SensorID,
 		Value:    inputJSON.Temperature,
 		Humidity: inputJSON.Humidity,

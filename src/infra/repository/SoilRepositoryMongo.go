@@ -6,7 +6,9 @@ import (
 	"os"
 	"time"
 
-	domain "github.com/iamviniciuss/greenhouse_api/src/domain"
+	repository "github.com/iamviniciuss/greenhouse_api/src/domain/repository"
+	shared "github.com/iamviniciuss/greenhouse_api/src/domain/shared"
+
 	"github.com/iamviniciuss/greenhouse_api/src/infra/database"
 	"github.com/iamviniciuss/greenhouse_api/src/infra/database/mongodb"
 	"github.com/iamviniciuss/greenhouse_api/src/util/mongo"
@@ -26,7 +28,7 @@ func NewSoilRepositoryMongo(connection database.Connection[mongodb.MongoInteface
 	}
 }
 
-func (erm *SoilRepositoryMongo[T]) CreateSensor(sensor *domain.Sensor) (*domain.Sensor, error) {
+func (erm *SoilRepositoryMongo[T]) CreateSensor(sensor *shared.Sensor) (*shared.Sensor, error) {
 	var id primitive.ObjectID
 
 	if sensor.ID == "" {
@@ -53,7 +55,7 @@ func (erm *SoilRepositoryMongo[T]) CreateSensor(sensor *domain.Sensor) (*domain.
 	return sensor, nil
 }
 
-func (erm *SoilRepositoryMongo[T]) Create(humidity *domain.HumidityRepositoryDTO) (*domain.HumidityRepositoryDTO, error) {
+func (erm *SoilRepositoryMongo[T]) Create(humidity *repository.HumidityRepositoryDTO) (*repository.HumidityRepositoryDTO, error) {
 	var id primitive.ObjectID
 
 	if humidity.ID == "" {
@@ -83,7 +85,7 @@ func (erm *SoilRepositoryMongo[T]) Create(humidity *domain.HumidityRepositoryDTO
 	return humidity, nil
 }
 
-func (erm *SoilRepositoryMongo[T]) FindLast20Values() ([]*domain.HumidityRepositoryDTO, error) {
+func (erm *SoilRepositoryMongo[T]) FindLast20Values() ([]*repository.HumidityRepositoryDTO, error) {
 	findOptions := options.Find().SetSort(map[string]int{"created_at": -1})
 	findOptions.SetLimit(20)
 	result, err := erm.getCollection("humidity").Find(context.TODO(), bson.M{}, findOptions)
@@ -92,7 +94,7 @@ func (erm *SoilRepositoryMongo[T]) FindLast20Values() ([]*domain.HumidityReposit
 		return nil, err
 	}
 
-	var data []*domain.HumidityRepositoryDTO
+	var data []*repository.HumidityRepositoryDTO
 	err = result.All(context.TODO(), &data)
 	if err != nil {
 		return nil, err
@@ -105,7 +107,7 @@ func (erm *SoilRepositoryMongo[T]) FindLast20Values() ([]*domain.HumidityReposit
 	return data, err
 }
 
-func (erm *SoilRepositoryMongo[T]) FindLastValue(humidity_id string) (*domain.HumidityRepositoryDTO, error) {
+func (erm *SoilRepositoryMongo[T]) FindLastValue(humidity_id string) (*repository.HumidityRepositoryDTO, error) {
 	findOptions := options.Find().SetSort(map[string]int{"created_at": -1})
 
 	result, err := erm.getCollection("humidity").Find(context.TODO(), bson.M{}, findOptions)
@@ -114,7 +116,7 @@ func (erm *SoilRepositoryMongo[T]) FindLastValue(humidity_id string) (*domain.Hu
 		return nil, err
 	}
 
-	var data []*domain.HumidityRepositoryDTO
+	var data []*repository.HumidityRepositoryDTO
 	err = result.All(context.TODO(), &data)
 	if err != nil {
 		return nil, err
@@ -127,9 +129,9 @@ func (erm *SoilRepositoryMongo[T]) FindLastValue(humidity_id string) (*domain.Hu
 	return data[0], err
 }
 
-func (erm *SoilRepositoryMongo[T]) FindSensorById(sensor_id string) (*domain.Sensor, error) {
+func (erm *SoilRepositoryMongo[T]) FindSensorById(sensor_id string) (*shared.Sensor, error) {
 
-	sensor := domain.Sensor{}
+	sensor := shared.Sensor{}
 	err := erm.getCollection("sensor").
 		FindOne(context.TODO(), bson.M{"_id": mongo.GetObjectIDFromString(sensor_id)}).
 		Decode(&sensor)
@@ -145,7 +147,7 @@ func (erm *SoilRepositoryMongo[T]) getCollection(collectionName string) *mongo_l
 		Collection(collectionName)
 }
 
-func (erm *SoilRepositoryMongo[T]) ListAll() ([]*domain.HumidityRepositoryDTO, error) {
+func (erm *SoilRepositoryMongo[T]) ListAll() ([]*repository.HumidityRepositoryDTO, error) {
 	findOptions := options.Find().SetSort(map[string]int{"created_at": -1})
 	// findOptions.SetLimit(4000)
 	result, err := erm.getCollection("humidity").Find(context.TODO(), bson.M{}, findOptions)
@@ -154,7 +156,7 @@ func (erm *SoilRepositoryMongo[T]) ListAll() ([]*domain.HumidityRepositoryDTO, e
 		return nil, err
 	}
 
-	var data []*domain.HumidityRepositoryDTO
+	var data []*repository.HumidityRepositoryDTO
 	err = result.All(context.TODO(), &data)
 	if err != nil {
 		return nil, err

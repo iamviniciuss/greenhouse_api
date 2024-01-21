@@ -7,16 +7,16 @@ import (
 
 	MQTT "github.com/eclipse/paho.mqtt.golang"
 	application "github.com/iamviniciuss/greenhouse_api/src/application"
-	domain "github.com/iamviniciuss/greenhouse_api/src/domain"
+	repository "github.com/iamviniciuss/greenhouse_api/src/domain/repository"
 )
 
 type WaterPumpTopicoCommand struct {
-	humidityRepository domain.SoilRepository
+	humidityRepository repository.SoilRepository
 	mqttClient         MQTT.Client
 	Topico             string
 }
 
-func NewWaterPumpTopicoCommand(humidityRepository domain.SoilRepository, client MQTT.Client, topic string) *WaterPumpTopicoCommand {
+func NewWaterPumpTopicoCommand(humidityRepository repository.SoilRepository, client MQTT.Client, topic string) *WaterPumpTopicoCommand {
 	return &WaterPumpTopicoCommand{
 		Topico:             topic,
 		humidityRepository: humidityRepository,
@@ -42,7 +42,7 @@ func (c *WaterPumpTopicoCommand) Execute(currentTopic string, message []byte) {
 	}
 
 	fmt.Println("Humidity: ", inputJSON.Humidity)
-	_, err = c.humidityRepository.Create(&domain.HumidityRepositoryDTO{
+	_, err = c.humidityRepository.Create(&repository.HumidityRepositoryDTO{
 		SensorID: inputJSON.SensorID,
 		Value:    inputJSON.Humidity,
 	})

@@ -1,7 +1,8 @@
 package repository
 
 import (
-	domain "github.com/iamviniciuss/greenhouse_api/src/domain"
+	repository "github.com/iamviniciuss/greenhouse_api/src/domain/repository"
+	shared "github.com/iamviniciuss/greenhouse_api/src/domain/shared"
 	mockTestify "github.com/stretchr/testify/mock"
 )
 
@@ -13,32 +14,32 @@ func NewSoilRepositoryMock() *SoilRepositoryMock {
 	return &SoilRepositoryMock{}
 }
 
-func (st *SoilRepositoryMock) FindSensorById(sensor_id string) (*domain.Sensor, error) {
+func (st *SoilRepositoryMock) FindSensorById(sensor_id string) (*shared.Sensor, error) {
 	args := st.Called()
-	output := args.Get(0).(*domain.Sensor)
+	output := args.Get(0).(*shared.Sensor)
 	return output, args.Error(1)
 }
 
-func (st *SoilRepositoryMock) FindLastValue(temperature_id string) (*domain.HumidityRepositoryDTO, error) {
+func (st *SoilRepositoryMock) FindLastValue(temperature_id string) (*repository.HumidityRepositoryDTO, error) {
 	args := st.Called()
-	output := args.Get(0).(*domain.HumidityRepositoryDTO)
+	output := args.Get(0).(*repository.HumidityRepositoryDTO)
 	return output, args.Error(1)
 }
 
-func (st *SoilRepositoryMock) Create(temperature *domain.HumidityRepositoryDTO) (*domain.HumidityRepositoryDTO, error) {
+func (st *SoilRepositoryMock) Create(temperature *repository.HumidityRepositoryDTO) (*repository.HumidityRepositoryDTO, error) {
 	args := st.Called(temperature)
-	output := args.Get(0).(*domain.HumidityRepositoryDTO)
+	output := args.Get(0).(*repository.HumidityRepositoryDTO)
 	return output, args.Error(1)
 }
 
-func (st *SoilRepositoryMock) ListAll() ([]*domain.HumidityRepositoryDTO, error) {
+func (st *SoilRepositoryMock) ListAll() ([]*repository.HumidityRepositoryDTO, error) {
 	args := st.Called()
-	output := args.Get(0).([]*domain.HumidityRepositoryDTO)
+	output := args.Get(0).([]*repository.HumidityRepositoryDTO)
 	return output, args.Error(1)
 }
 
-func (st *SoilRepositoryMock) CreateSensor(sensor *domain.Sensor) (*domain.Sensor, error) {
+func (st *SoilRepositoryMock) CreateSensor(sensor *shared.Sensor) (*shared.Sensor, error) {
 	args := st.Called(sensor)
-	output := args.Get(0).(*domain.Sensor)
+	output := args.Get(0).(*shared.Sensor)
 	return output, args.Error(1)
 }

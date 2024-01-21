@@ -6,7 +6,9 @@ import (
 	"os"
 	"time"
 
-	domain "github.com/iamviniciuss/greenhouse_api/src/domain"
+	repository "github.com/iamviniciuss/greenhouse_api/src/domain/repository"
+	shared "github.com/iamviniciuss/greenhouse_api/src/domain/shared"
+
 	"github.com/iamviniciuss/greenhouse_api/src/infra/database"
 	"github.com/iamviniciuss/greenhouse_api/src/infra/database/mongodb"
 	"github.com/iamviniciuss/greenhouse_api/src/util/mongo"
@@ -26,7 +28,7 @@ func NewTemperatureRepositoryMongo(connection database.Connection[mongodb.MongoI
 	}
 }
 
-func (erm *TemperatureRepositoryMongo[T]) CreateSensor(sensor *domain.Sensor) (*domain.Sensor, error) {
+func (erm *TemperatureRepositoryMongo[T]) CreateSensor(sensor *shared.Sensor) (*shared.Sensor, error) {
 	var id primitive.ObjectID
 
 	if sensor.ID == "" {
@@ -53,7 +55,7 @@ func (erm *TemperatureRepositoryMongo[T]) CreateSensor(sensor *domain.Sensor) (*
 	return sensor, nil
 }
 
-func (erm *TemperatureRepositoryMongo[T]) Create(temperature *domain.TemperatureRepositoryDTO) (*domain.TemperatureRepositoryDTO, error) {
+func (erm *TemperatureRepositoryMongo[T]) Create(temperature *repository.TemperatureRepositoryDTO) (*repository.TemperatureRepositoryDTO, error) {
 	var id primitive.ObjectID
 
 	if temperature.ID == "" {
@@ -81,7 +83,7 @@ func (erm *TemperatureRepositoryMongo[T]) Create(temperature *domain.Temperature
 	return temperature, nil
 }
 
-func (erm *TemperatureRepositoryMongo[T]) FindLast20Values() ([]*domain.TemperatureRepositoryDTO, error) {
+func (erm *TemperatureRepositoryMongo[T]) FindLast20Values() ([]*repository.TemperatureRepositoryDTO, error) {
 	findOptions := options.Find().SetSort(map[string]int{"created_at": -1})
 	findOptions.SetLimit(20)
 	result, err := erm.getCollection("temperature").Find(context.TODO(), bson.M{}, findOptions)
@@ -90,7 +92,7 @@ func (erm *TemperatureRepositoryMongo[T]) FindLast20Values() ([]*domain.Temperat
 		return nil, err
 	}
 
-	var data []*domain.TemperatureRepositoryDTO
+	var data []*repository.TemperatureRepositoryDTO
 	err = result.All(context.TODO(), &data)
 	if err != nil {
 		return nil, err
@@ -103,7 +105,7 @@ func (erm *TemperatureRepositoryMongo[T]) FindLast20Values() ([]*domain.Temperat
 	return data, err
 }
 
-func (erm *TemperatureRepositoryMongo[T]) FindLastValue(temperature_id string) (*domain.TemperatureRepositoryDTO, error) {
+func (erm *TemperatureRepositoryMongo[T]) FindLastValue(temperature_id string) (*repository.TemperatureRepositoryDTO, error) {
 	findOptions := options.Find().SetSort(map[string]int{"created_at": -1})
 
 	result, err := erm.getCollection("temperature").Find(context.TODO(), bson.M{}, findOptions)
@@ -112,7 +114,7 @@ func (erm *TemperatureRepositoryMongo[T]) FindLastValue(temperature_id string) (
 		return nil, err
 	}
 
-	var data []*domain.TemperatureRepositoryDTO
+	var data []*repository.TemperatureRepositoryDTO
 	err = result.All(context.TODO(), &data)
 	if err != nil {
 		return nil, err
@@ -125,9 +127,9 @@ func (erm *TemperatureRepositoryMongo[T]) FindLastValue(temperature_id string) (
 	return data[0], err
 }
 
-func (erm *TemperatureRepositoryMongo[T]) FindSensorById(sensor_id string) (*domain.Sensor, error) {
+func (erm *TemperatureRepositoryMongo[T]) FindSensorById(sensor_id string) (*shared.Sensor, error) {
 
-	sensor := domain.Sensor{}
+	sensor := shared.Sensor{}
 	err := erm.getCollection("sensor").
 		FindOne(context.TODO(), bson.M{"_id": mongo.GetObjectIDFromString(sensor_id)}).
 		Decode(&sensor)
@@ -143,7 +145,7 @@ func (erm *TemperatureRepositoryMongo[T]) getCollection(collectionName string) *
 		Collection(collectionName)
 }
 
-func (erm *TemperatureRepositoryMongo[T]) ListAll() ([]*domain.TemperatureRepositoryDTO, error) {
+func (erm *TemperatureRepositoryMongo[T]) ListAll() ([]*repository.TemperatureRepositoryDTO, error) {
 	findOptions := options.Find().SetSort(map[string]int{"created_at": -1})
 	// findOptions.SetLimit(1000)
 	result, err := erm.getCollection("temperature").Find(context.TODO(), bson.M{}, findOptions)
@@ -152,7 +154,7 @@ func (erm *TemperatureRepositoryMongo[T]) ListAll() ([]*domain.TemperatureReposi
 		return nil, err
 	}
 
-	var data []*domain.TemperatureRepositoryDTO
+	var data []*repository.TemperatureRepositoryDTO
 	err = result.All(context.TODO(), &data)
 	if err != nil {
 		return nil, err

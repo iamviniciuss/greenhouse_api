@@ -5,12 +5,15 @@ import (
 	"fmt"
 	"os"
 
+	repository "github.com/iamviniciuss/greenhouse_api/src/domain/repository"
+	shared "github.com/iamviniciuss/greenhouse_api/src/domain/shared"
+	temperature_domain "github.com/iamviniciuss/greenhouse_api/src/domain/temperature"
+
 	MQTT "github.com/eclipse/paho.mqtt.golang"
-	domain "github.com/iamviniciuss/greenhouse_api/src/domain"
 )
 
 type ManageTemperature struct {
-	domain.TemperatureRepository
+	repository.TemperatureRepository
 }
 
 type ManageTemperatureOutput struct {
@@ -19,13 +22,13 @@ type ManageTemperatureOutput struct {
 	WaterPumpRelay string
 }
 
-func NewManageTemperature(tp domain.TemperatureRepository) *ManageTemperature {
+func NewManageTemperature(tp repository.TemperatureRepository) *ManageTemperature {
 	return &ManageTemperature{
 		TemperatureRepository: tp,
 	}
 }
 
-func (m *ManageTemperature) Execute(greenhouse *domain.Greenhouse) (*ManageTemperatureOutput, error) {
+func (m *ManageTemperature) Execute(greenhouse *shared.Greenhouse) (*ManageTemperatureOutput, error) {
 
 	if len(greenhouse.Sensors) == 0 {
 		return nil, fmt.Errorf("there aren't any sensors")
@@ -47,7 +50,7 @@ func (m *ManageTemperature) Execute(greenhouse *domain.Greenhouse) (*ManageTempe
 		return nil, err
 	}
 
-	output, err := domain.NewTemperatureState().ManageState(sensor, temperature)
+	output, err := temperature_domain.NewTemperatureState().ManageState(sensor, temperature)
 	if err != nil {
 		fmt.Println("not found NewTemperatureState:")
 		return nil, err
@@ -64,14 +67,14 @@ func (m *ManageTemperature) Execute(greenhouse *domain.Greenhouse) (*ManageTempe
 func (m *ManageTemperature) GetCommand(mqttClient MQTT.Client) (*TemperatureCtrlOutput, error) {
 	fmt.Println("ManageTemperature - Executing GetCommand")
 
-	greenhouse := &domain.Greenhouse{
+	greenhouse := &shared.Greenhouse{
 		ID:   "01",
 		Name: "ESP32_HOUSE_VINICIUS",
-		Sensors: []*domain.Sensor{
-			&domain.Sensor{
+		Sensors: []*shared.Sensor{
+			&shared.Sensor{
 				ID:            "645d82f4d2d163d2edc380a5",
-				Envoironments: &domain.Envoironment{},
-				Actuator: &domain.Actuator{
+				Envoironments: &shared.Envoironment{},
+				Actuator: &shared.Actuator{
 					ID:   "1",
 					Name: "Bomba d'água",
 				},
