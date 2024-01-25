@@ -1,6 +1,8 @@
 package application
 
 import (
+	"fmt"
+
 	repository "github.com/iamviniciuss/greenhouse_api/src/domain/repository"
 	shared "github.com/iamviniciuss/greenhouse_api/src/domain/shared"
 	soil "github.com/iamviniciuss/greenhouse_api/src/domain/soil"
@@ -25,14 +27,18 @@ func (m *CollectSendingWater) Execute(waterPump soil.WaterPump, event shared.Eve
 	energyConsumption := waterPump.EnergyConsumption(event.Duration()).EnergyConsumption
 	producingWater := waterPump.ProducingWater(event.Duration()).NumberOfLitersPumped
 
+	timeDurationString := fmt.Sprintf("%f", event.Duration())
+
 	m.SoilRepository.RecordMetric(repository.MetricRepositoryDTO{
-		Type:  shared.ENERGY_CONSUME,
-		Value: energyConsumption,
+		Type:        shared.ENERGY_CONSUME,
+		Value:       energyConsumption,
+		Description: "event duration: " + timeDurationString + " minutes. Consumed in watts-minutes.",
 	})
 
 	m.SoilRepository.RecordMetric(repository.MetricRepositoryDTO{
-		Type:  shared.WATER_BOMBED,
-		Value: producingWater,
+		Type:        shared.WATER_BOMBED,
+		Value:       producingWater,
+		Description: "event duration: " + timeDurationString + " minutes. Amount of liters water bombed to greenhouse",
 	})
 
 	return CollectSendingWaterOutput{

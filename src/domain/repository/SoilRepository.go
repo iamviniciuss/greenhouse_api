@@ -26,11 +26,12 @@ type HumidityRepositoryDTO struct {
 }
 
 type MetricRepositoryDTO struct {
-	ID        string      `json:"_id" bson:"_id"`
-	Type      string      `json:"type" bson:"type"`
-	SensorID  string      `json:"sensor_id" bson:"sensor_id"`
-	CreatedAt time.Time   `json:"created_at" bson:"created_at"`
-	Value     interface{} `json:"value"`
+	ID          string      `json:"_id" bson:"_id"`
+	Type        string      `json:"type" bson:"type"`
+	SensorID    string      `json:"sensor_id" bson:"sensor_id"`
+	Description string      `json:"description" bson:"description"`
+	CreatedAt   time.Time   `json:"created_at" bson:"created_at"`
+	Value       interface{} `json:"value"`
 }
 
 func (hr *HumidityRepositoryDTO) CalculatePercentage() {

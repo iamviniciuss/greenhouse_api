@@ -171,11 +171,12 @@ func (erm *SoilRepositoryMongo[T]) ListAll() ([]*repository.HumidityRepositoryDT
 
 func (erm *SoilRepositoryMongo[T]) RecordMetric(metric repository.MetricRepositoryDTO) (repository.MetricRepositoryDTO, error) {
 	res, err1 := erm.getCollection("metric").InsertOne(context.TODO(), bson.M{
-		"_id":        primitive.NewObjectID(),
-		"created_at": time.Now(),
-		"type":       metric.Type,
-		"value":      metric.Value,
-		"sensor_id":  mongo.GetObjectIDFromString(metric.SensorID),
+		"_id":         primitive.NewObjectID(),
+		"created_at":  time.Now(),
+		"type":        metric.Type,
+		"description": metric.Description,
+		"value":       metric.Value,
+		"sensor_id":   mongo.GetObjectIDFromString(metric.SensorID),
 	})
 
 	if err1 != nil {
