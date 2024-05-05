@@ -1,4 +1,4 @@
-module github.com/Vinicius-Santos-da-Silva/greenhouse_api
+module github.com/iamviniciuss/greenhouse_api
 
 go 1.18
 
