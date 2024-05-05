@@ -43,3 +43,9 @@ func (st *SoilRepositoryMock) CreateSensor(sensor *shared.Sensor) (*shared.Senso
 	output := args.Get(0).(*shared.Sensor)
 	return output, args.Error(1)
 }
+
+func (st *SoilRepositoryMock) RecordMetric(metric repository.MetricRepositoryDTO) (repository.MetricRepositoryDTO, error) {
+	args := st.Called(metric)
+	output := args.Get(0).(repository.MetricRepositoryDTO)
+	return output, args.Error(1)
+}

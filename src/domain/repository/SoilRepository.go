@@ -12,6 +12,7 @@ type SoilRepository interface {
 	ListAll() ([]*HumidityRepositoryDTO, error)
 	Create(temperature *HumidityRepositoryDTO) (*HumidityRepositoryDTO, error)
 	CreateSensor(sensor *shared.Sensor) (*shared.Sensor, error)
+	RecordMetric(metric MetricRepositoryDTO) (MetricRepositoryDTO, error)
 }
 
 type HumidityRepositoryDTO struct {
@@ -22,6 +23,15 @@ type HumidityRepositoryDTO struct {
 	Percentage         float64   `json:"percentage"`
 	ExponentialAverage []float64 `json:"exponential_average"`
 	MoveAverage        []float64 `json:"movel_average"`
+}
+
+type MetricRepositoryDTO struct {
+	ID          string      `json:"_id" bson:"_id"`
+	Type        string      `json:"type" bson:"type"`
+	SensorID    string      `json:"sensor_id" bson:"sensor_id"`
+	Description string      `json:"description" bson:"description"`
+	CreatedAt   time.Time   `json:"created_at" bson:"created_at"`
+	Value       interface{} `json:"value"`
 }
 
 func (hr *HumidityRepositoryDTO) CalculatePercentage() {

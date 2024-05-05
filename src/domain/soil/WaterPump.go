@@ -8,6 +8,9 @@ import (
 )
 
 type WaterPump struct {
+	ImpulseWaterPerMinutes float64
+	Voltage                float64
+	ElectricCurrent        float64
 }
 
 type WaterPumpState struct {

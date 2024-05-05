@@ -4,9 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"time"
 
 	repository "github.com/iamviniciuss/greenhouse_api/src/domain/repository"
 	shared "github.com/iamviniciuss/greenhouse_api/src/domain/shared"
+	domain "github.com/iamviniciuss/greenhouse_api/src/domain/soil"
 	soil_domain "github.com/iamviniciuss/greenhouse_api/src/domain/soil"
 
 	MQTT "github.com/eclipse/paho.mqtt.golang"
@@ -36,26 +38,33 @@ func (m *ManageWaterPump) Execute(greenhouse *shared.Greenhouse) (*ManageWaterPu
 
 	sensorID := greenhouse.Sensors[0].ID
 
-	// fmt.Println("sensorID:", sensorID)
-
 	humidity, err := m.SoilRepository.FindLastValue(sensorID)
 	if err != nil {
-		// fmt.Println("not found humidity:")
-		return nil, err
+		return nil, fmt.Errorf("not found last value to humidity")
 	}
 
 	sensor, err := m.SoilRepository.FindSensorById(humidity.SensorID)
 	if err != nil {
-		// fmt.Println("not found sensor:", humidity.SensorID)
-		return nil, err
+		return nil, fmt.Errorf("not found sensor by id")
 	}
 
 	output, err := soil_domain.NewWaterPumpState().ManageState(sensor, humidity)
 	if err != nil {
-		// fmt.Println("not found NewWaterPumpState:")
-		return nil, err
+		return nil, fmt.Errorf("error to make command to water pump")
 	}
 
+	Started := time.Now().Add(-(10 * time.Minute))
+	Ended := time.Now().Add(2 * time.Minute)
+
+	NewCollectSendingWater(m.SoilRepository).Execute(domain.WaterPump{
+		ImpulseWaterPerMinutes: 1.5,
+		Voltage:                5,
+		ElectricCurrent:        0.2,
+	}, shared.Event{
+		ID:      "",
+		Started: Started,
+		Ended:   Ended,
+	})
 	return &ManageWaterPumpOutput{
 		GreenhouseID:    sensor.GreenhouseID,
 		TurnOnWaterPump: output.TurnOnWaterPump,
