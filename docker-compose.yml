@@ -5,7 +5,7 @@ services:
     build: .
     environment:
     - AMBIENTE=PROD
-    - PORT=:9000
+    - PORT=:9091
     - WATER_PUMP_SUBSCRIBE=esp32/greenhouse/water_pump/pub
     - WATER_PUMP_PUBLISHER=esp32/greenhouse/water_pump/sub/
     - TEMPERATURE_SUBSCRIBE=esp32/greenhouse/temperature/pub
@@ -13,8 +13,9 @@ services:
     - AWS_ACCESS_KEY_ID=AKIAVE7U4U45RS6EVYBV
     - AWS_SECRET_ACCESS_KEY=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
     - AWS_REGION=us-east-1
+    - MONGO_URL=mongodb://host.docker.internal:27017
     ports:
-    - 9000:9000
+    - 9091:9091
     networks:
     - arduino
 

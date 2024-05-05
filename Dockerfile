@@ -33,6 +33,6 @@ COPY --from=builder ["/build/.docker/entrypoint.sh", "/"]
 
 RUN chmod +x /entrypoint.sh /greenhouse_api
 
-EXPOSE 9000
+EXPOSE 9091
 
 ENTRYPOINT ["/entrypoint.sh"]
