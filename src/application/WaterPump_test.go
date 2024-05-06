@@ -3,12 +3,14 @@ package application
 import (
 	"time"
 
+	repo "github.com/iamviniciuss/greenhouse_api/src/domain/repository"
 	repository_domain "github.com/iamviniciuss/greenhouse_api/src/domain/repository"
 	shared "github.com/iamviniciuss/greenhouse_api/src/domain/shared"
 	repository "github.com/iamviniciuss/greenhouse_api/src/infra/repository"
 
 	"testing"
 
+	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -50,6 +52,7 @@ func (suite *WaterPumpTestSuite) Test_Should_Return_Command_To_Turn_On_Water_Pum
 	}, nil)
 
 	repository.On("FindSensorById").Return(sensor, nil)
+	repository.On("RecordMetric", mock.Anything).Maybe()
 
 	useCase := NewManageWaterPump(repository)
 
@@ -93,6 +96,7 @@ func (suite *WaterPumpTestSuite) Test_Should_Return_Command_To_Turn_On_Water_Pum
 	}, nil)
 
 	repository.On("FindSensorById").Return(sensor, nil)
+	repository.On("RecordMetric", mock.Anything).Return(repo.MetricRepositoryDTO{}, nil)
 
 	useCase := NewManageWaterPump(repository)
 
