@@ -1,5 +1,5 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:us-east-1:992382576119:task-definition/greenhouse-app-task-definition:1",
+    "taskDefinitionArn": "arn:aws:ecs:us-east-1:992382576119:task-definition/greenhouse-app-task-definition:2",
     "containerDefinitions": [
         {
             "name": "greenhouse-app",
@@ -45,7 +45,7 @@
     "family": "greenhouse-app-task-definition",
     "executionRoleArn": "arn:aws:iam::992382576119:role/ecsTaskExecutionRole",
     "networkMode": "bridge",
-    "revision": 1,
+    "revision": 2,
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
@@ -87,7 +87,5 @@
         "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
     },
-    "registeredAt": "2024-05-05T15:48:07.791Z",
-    "registeredBy": "arn:aws:iam::992382576119:root",
     "tags": []
 }
