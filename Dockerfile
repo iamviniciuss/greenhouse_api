@@ -24,6 +24,7 @@ RUN go build -ldflags="-s -w" -o greenhouse_api ./src
 FROM alpine:latest
 
 RUN apk update && apk add --no-cache ca-certificates bash git aws-cli
+RUN apk add jq
 
 COPY --from=builder /build/greenhouse_api /greenhouse_api
 
