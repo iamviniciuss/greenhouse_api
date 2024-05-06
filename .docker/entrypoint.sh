@@ -20,36 +20,12 @@
 # echo "$CERT_VALUE" > ./keys/greenhouse_01_humidity.cert.pem
 # echo "$CA_VALUE" > ./keys/root-CA.crt
 
-
 AWS_SECRETS=$(aws secretsmanager get-secret-value --secret-id "greenhouse_api" --query 'SecretString' --output text)
 
 export MONGO_URL=$(echo "$AWS_SECRETS" | jq -r '.ARDUINO_DATABASE_URL')
 export DATABASE=$(echo "$AWS_SECRETS" | jq -r '.ARDUINO_DATABASE_VALUE')
 export PORT=$(echo "$AWS_SECRETS" | jq -r '.HTTP_PORT')
 
-# ARDUINO_BROKER_URL_VALUE=$(aws secretsmanager get-secret-value --secret-id "ARDUINO_BROKER_URL" --query 'SecretString' --output text)
-
-export AMBIENTE=DEV
-
-echo "INICIO"
-echo $AMBIENTE
-echo $AWS_SECRETS
-echo $ARDUINO_DATABASE_VALUE
-echo $ARDUINO_DATABASE_URL_VALUE
-echo "FIM"
-# export BROKER_URL=$ARDUINO_BROKER_URL_VALUE
-
-
-
-
-# if [ -z "$AMBIENTE" ]; then
-#   echo "A variável AMBIENTE não está definida."
-# elif [ "$AMBIENTE" = "PROD" ]; then
-#   echo "Você está executando em ambiente de produção."
-#   exec /greenhouse_api
-# elif [ "$AMBIENTE" = "DEV" ]; then
-#   exec /greenhouse_api
-#   echo "Você está executando em ambiente de desenvolvimento"
-# fi
+# export AMBIENTE=DEV
 
 exec /greenhouse_api
