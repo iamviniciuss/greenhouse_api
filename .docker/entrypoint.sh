@@ -25,6 +25,8 @@ AWS_SECRETS=$(aws secretsmanager get-secret-value --secret-id "greenhouse_api" -
 
 export MONGO_URL=$(echo "$AWS_SECRETS" | jq -r '.ARDUINO_DATABASE_URL')
 export DATABASE=$(echo "$AWS_SECRETS" | jq -r '.ARDUINO_DATABASE_VALUE')
+export PORT=$(echo "$AWS_SECRETS" | jq -r '.HTTP_PORT')
+
 # ARDUINO_BROKER_URL_VALUE=$(aws secretsmanager get-secret-value --secret-id "ARDUINO_BROKER_URL" --query 'SecretString' --output text)
 
 export AMBIENTE=DEV
